@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://m1tq3ym602a5"]
+
+[ext_resource type="Script" uid="uid://db4rmo4gj0b8y" path="res://Scripts/Activity.gd" id="1_o4o0c"]
+[ext_resource type="Script" uid="uid://ctfqeofb5df38" path="res://progress_bar.gd" id="2_kybm7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4v7s"]
+bg_color = Color(0, 0.39215687, 1, 1)
+
+[node name="Activity" type="MarginContainer" unique_id=1363834335]
+custom_minimum_size = Vector2(200, 40)
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+script = ExtResource("1_o4o0c")
+display_text = "HELP"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1240350633]
+propagate_maximum_size = false
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Button" type="Button" parent="VBoxContainer" unique_id=951253775]
+layout_mode = 2
+size_flags_vertical = 3
+toggle_mode = true
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer" unique_id=1433043989]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/fill = SubResource("StyleBoxFlat_g4v7s")
+value = 5.0
+show_percentage = false
+script = ExtResource("2_kybm7")

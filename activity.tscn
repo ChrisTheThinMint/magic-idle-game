@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://m1tq3ym602a5"]
+
+[ext_resource type="Script" uid="uid://db4rmo4gj0b8y" path="res://Scripts/Activity_UI.gd" id="1_o4o0c"]
+[ext_resource type="Script" uid="uid://coqwnstoj346c" path="res://addons/tooltips_pro/scripts/tooltip_trigger.gd" id="2_o4o0c"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4v7s"]
+bg_color = Color(0, 0.39215687, 1, 1)
+
+[node name="Activity" type="MarginContainer" unique_id=1363834335]
+custom_minimum_size = Vector2(200, 40)
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+script = ExtResource("1_o4o0c")
+
+[node name="Button" type="Button" parent="." unique_id=951253775]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+toggle_mode = true
+script = ExtResource("2_o4o0c")
+tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_nesting_example.tscn"
+trigger_mode = 1
+tooltip_alignment = 2
+origin = 3
+offset = Vector2(1, 1)
+tooltip_strings = Array[String]([""])
+
+[node name="ProgressBar" type="ProgressBar" parent="Button" unique_id=1433043989]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -5.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 1
+mouse_filter = 1
+theme_override_styles/fill = SubResource("StyleBoxFlat_g4v7s")
+step = 0.0
+show_percentage = false

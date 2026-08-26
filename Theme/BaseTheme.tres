@@ -1,0 +1,8 @@
+[gd_resource type="Theme" format=3 uid="uid://dljct6m2ai7uo"]
+
+[sub_resource type="SystemFont" id="SystemFont_f1esx"]
+font_names = PackedStringArray("Segoe UI")
+
+[resource]
+default_font = SubResource("SystemFont_f1esx")
+default_font_size = 16
