@@ -2,7 +2,7 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://b4q6nn6ag2s40"
+uid="uid://dxhwu7ob8ey5i"
 path="res://.godot/imported/libertinusserif-bold.otf-0ca730a5d454327623b1f58ad0ecb5ae.fontdata"
 
 [deps]
@@ -13,8 +13,8 @@ dest_files=["res://.godot/imported/libertinusserif-bold.otf-0ca730a5d454327623b1
 [params]
 
 Rendering=null
-antialiasing=2
-generate_mipmaps=true
+antialiasing=1
+generate_mipmaps=false
 disable_embedded_bitmaps=true
 multichannel_signed_distance_field=false
 msdf_pixel_range=8
@@ -30,12 +30,7 @@ Fallbacks=null
 fallbacks=[]
 Compress=null
 compress=true
-preload=[{
-"chars": [],
-"glyphs": [],
-"name": "New Configuration",
-"size": Vector2i(16, 0)
-}]
+preload=[]
 language_support={}
 script_support={}
 opentype_features={}

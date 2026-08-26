@@ -2,17 +2,18 @@
 
 [ext_resource type="Script" uid="uid://ixs2o0jr6jjg" path="res://addons/tooltips_pro/scripts/tooltip_template.gd" id="1_bnkh0"]
 [ext_resource type="StyleBox" uid="uid://3lxjgekqranv" path="res://addons/tooltips_pro/examples/resources/styles/TooltipStyleBoxFlat.tres" id="1_s5850"]
+[ext_resource type="Theme" uid="uid://dljct6m2ai7uo" path="res://Theme/BaseTheme.tres" id="1_ufdc0"]
 [ext_resource type="Script" uid="uid://coqwnstoj346c" path="res://addons/tooltips_pro/scripts/tooltip_trigger.gd" id="2_07d6w"]
 [ext_resource type="Texture2D" uid="uid://b87xbl54atafo" path="res://addons/tooltips_pro/examples/resources/styles/PinTexture.png" id="3_j55aj"]
 [ext_resource type="Texture2D" uid="uid://nk5oqxxq4y1f" path="res://addons/tooltips_pro/examples/resources/styles/LockTexture.png" id="3_kuuts"]
-[ext_resource type="FontFile" uid="uid://c7k513kfb7ckh" path="res://libertinusserif-regular.otf" id="3_qfmpg"]
+[ext_resource type="FontFile" uid="uid://ravms16mjtbc" path="res://libertinusserif-regular.otf" id="3_qfmpg"]
 [ext_resource type="Texture2D" uid="uid://ceqwrw7lmm8c6" path="res://addons/tooltips_pro/examples/resources/styles/ProgressBarTexture.tres" id="3_s5850"]
 [ext_resource type="Texture2D" uid="uid://bsdao5logxp22" path="res://addons/tooltips_pro/examples/resources/styles/LockOpenTexture.png" id="4_j55aj"]
-[ext_resource type="FontFile" uid="uid://cqv4ptpw1047n" path="res://libertinusserif-semibold.otf" id="4_ufdc0"]
+[ext_resource type="FontFile" uid="uid://cb0rmayu7fatq" path="res://libertinusserif-semibold.otf" id="4_ufdc0"]
 [ext_resource type="StyleBox" uid="uid://c2a0e1tu4ajov" path="res://addons/tooltips_pro/examples/resources/styles/LockBorderStyleBoxFlat.tres" id="5_21goc"]
-[ext_resource type="FontFile" uid="uid://cfkfax2ut1mje" path="res://libertinusserif-semibolditalic.otf" id="5_bm5yg"]
-[ext_resource type="FontFile" uid="uid://bc6kx0yor1l3f" path="res://libertinusserif-italic.otf" id="6_b3fse"]
-[ext_resource type="FontFile" uid="uid://cfyjclbfoleia" path="res://libertinusmono-regular.otf" id="7_utmgb"]
+[ext_resource type="FontFile" uid="uid://dhbqgx77udkeg" path="res://libertinusserif-semibolditalic.otf" id="5_bm5yg"]
+[ext_resource type="FontFile" uid="uid://cvycl4yf2n37p" path="res://libertinusserif-italic.otf" id="6_b3fse"]
+[ext_resource type="FontFile" uid="uid://b7mv3hlvur5qm" path="res://libertinusmono-regular.otf" id="7_utmgb"]
 
 [node name="TooltipTemplateInfiniteNestingExample" type="PanelContainer" unique_id=243202780 node_paths=PackedStringArray("content_labels", "locked_elements", "locking_elements", "unlocked_elements", "pinned_elements", "timer_lock_progress_bar") groups=["tooltips"]]
 z_index = 1
@@ -20,6 +21,7 @@ offset_right = 130.0
 offset_bottom = 45.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme = ExtResource("1_ufdc0")
 theme_override_styles/panel = ExtResource("1_s5850")
 script = ExtResource("1_bnkh0")
 content_labels = [NodePath("MarginContainer/VBoxContainer/RichTextLabel"), NodePath("MarginContainer/VBoxContainer/RichTextLabel2"), NodePath("MarginContainer/VBoxContainer/RichTextLabel3"), NodePath("MarginContainer/VBoxContainer/RichTextLabel4"), NodePath("MarginContainer/VBoxContainer/RichTextLabel5"), NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RichTextLabelBottom")]

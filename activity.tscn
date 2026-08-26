@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://m1tq3ym602a5"]
 
+[ext_resource type="Theme" uid="uid://dljct6m2ai7uo" path="res://Theme/BaseTheme.tres" id="1_cg7wu"]
 [ext_resource type="Script" uid="uid://db4rmo4gj0b8y" path="res://Scripts/Activity_UI.gd" id="1_o4o0c"]
-[ext_resource type="FontFile" uid="uid://b4q6nn6ag2s40" path="res://libertinusserif-bold.otf" id="2_kybm7"]
+[ext_resource type="FontFile" uid="uid://dxhwu7ob8ey5i" path="res://libertinusserif-bold.otf" id="2_kybm7"]
 [ext_resource type="Script" uid="uid://coqwnstoj346c" path="res://addons/tooltips_pro/scripts/tooltip_trigger.gd" id="2_o4o0c"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4v7s"]
@@ -9,6 +10,7 @@ bg_color = Color(0, 0.39215687, 1, 1)
 
 [node name="Activity" type="MarginContainer" unique_id=1363834335]
 custom_minimum_size = Vector2(200, 40)
+theme = ExtResource("1_cg7wu")
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
