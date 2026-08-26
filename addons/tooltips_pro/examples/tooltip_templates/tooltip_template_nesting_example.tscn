@@ -5,9 +5,14 @@
 [ext_resource type="Script" uid="uid://coqwnstoj346c" path="res://addons/tooltips_pro/scripts/tooltip_trigger.gd" id="2_07d6w"]
 [ext_resource type="Texture2D" uid="uid://b87xbl54atafo" path="res://addons/tooltips_pro/examples/resources/styles/PinTexture.png" id="3_j55aj"]
 [ext_resource type="Texture2D" uid="uid://nk5oqxxq4y1f" path="res://addons/tooltips_pro/examples/resources/styles/LockTexture.png" id="3_kuuts"]
+[ext_resource type="FontFile" uid="uid://c7k513kfb7ckh" path="res://libertinusserif-regular.otf" id="3_qfmpg"]
 [ext_resource type="Texture2D" uid="uid://ceqwrw7lmm8c6" path="res://addons/tooltips_pro/examples/resources/styles/ProgressBarTexture.tres" id="3_s5850"]
 [ext_resource type="Texture2D" uid="uid://bsdao5logxp22" path="res://addons/tooltips_pro/examples/resources/styles/LockOpenTexture.png" id="4_j55aj"]
+[ext_resource type="FontFile" uid="uid://cqv4ptpw1047n" path="res://libertinusserif-semibold.otf" id="4_ufdc0"]
 [ext_resource type="StyleBox" uid="uid://c2a0e1tu4ajov" path="res://addons/tooltips_pro/examples/resources/styles/LockBorderStyleBoxFlat.tres" id="5_21goc"]
+[ext_resource type="FontFile" uid="uid://cfkfax2ut1mje" path="res://libertinusserif-semibolditalic.otf" id="5_bm5yg"]
+[ext_resource type="FontFile" uid="uid://bc6kx0yor1l3f" path="res://libertinusserif-italic.otf" id="6_b3fse"]
+[ext_resource type="FontFile" uid="uid://cfyjclbfoleia" path="res://libertinusmono-regular.otf" id="7_utmgb"]
 
 [node name="TooltipTemplateInfiniteNestingExample" type="PanelContainer" unique_id=243202780 node_paths=PackedStringArray("content_labels", "locked_elements", "locking_elements", "unlocked_elements", "pinned_elements", "timer_lock_progress_bar") groups=["tooltips"]]
 z_index = 1
@@ -47,6 +52,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
 theme_override_colors/default_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_fonts/normal_font = ExtResource("3_qfmpg")
+theme_override_fonts/bold_font = ExtResource("4_ufdc0")
+theme_override_fonts/bold_italics_font = ExtResource("5_bm5yg")
+theme_override_fonts/italics_font = ExtResource("6_b3fse")
+theme_override_fonts/mono_font = ExtResource("7_utmgb")
 theme_override_font_sizes/normal_font_size = 14
 theme_override_font_sizes/bold_font_size = 14
 theme_override_font_sizes/bold_italics_font_size = 14
@@ -70,6 +80,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
 theme_override_colors/default_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_fonts/normal_font = ExtResource("3_qfmpg")
+theme_override_fonts/bold_font = ExtResource("4_ufdc0")
+theme_override_fonts/bold_italics_font = ExtResource("5_bm5yg")
+theme_override_fonts/italics_font = ExtResource("6_b3fse")
+theme_override_fonts/mono_font = ExtResource("7_utmgb")
 theme_override_font_sizes/normal_font_size = 12
 theme_override_font_sizes/bold_font_size = 12
 theme_override_font_sizes/bold_italics_font_size = 12
@@ -97,6 +112,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
 theme_override_colors/default_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_fonts/normal_font = ExtResource("3_qfmpg")
+theme_override_fonts/bold_font = ExtResource("4_ufdc0")
+theme_override_fonts/bold_italics_font = ExtResource("5_bm5yg")
+theme_override_fonts/italics_font = ExtResource("6_b3fse")
+theme_override_fonts/mono_font = ExtResource("7_utmgb")
 theme_override_font_sizes/normal_font_size = 12
 theme_override_font_sizes/bold_font_size = 12
 theme_override_font_sizes/bold_italics_font_size = 12
@@ -124,6 +144,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
 theme_override_colors/default_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_fonts/normal_font = ExtResource("3_qfmpg")
+theme_override_fonts/bold_font = ExtResource("4_ufdc0")
+theme_override_fonts/bold_italics_font = ExtResource("5_bm5yg")
+theme_override_fonts/italics_font = ExtResource("6_b3fse")
+theme_override_fonts/mono_font = ExtResource("7_utmgb")
 theme_override_font_sizes/normal_font_size = 12
 theme_override_font_sizes/bold_font_size = 12
 theme_override_font_sizes/bold_italics_font_size = 12
@@ -151,6 +176,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
 theme_override_colors/default_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_fonts/normal_font = ExtResource("3_qfmpg")
+theme_override_fonts/bold_font = ExtResource("4_ufdc0")
+theme_override_fonts/bold_italics_font = ExtResource("5_bm5yg")
+theme_override_fonts/italics_font = ExtResource("6_b3fse")
+theme_override_fonts/mono_font = ExtResource("7_utmgb")
 theme_override_font_sizes/normal_font_size = 12
 theme_override_font_sizes/bold_font_size = 12
 theme_override_font_sizes/bold_italics_font_size = 12
@@ -180,6 +210,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 theme_override_colors/default_color = Color(0.4, 0.4, 0.4, 1)
+theme_override_fonts/normal_font = ExtResource("3_qfmpg")
+theme_override_fonts/bold_font = ExtResource("4_ufdc0")
+theme_override_fonts/bold_italics_font = ExtResource("5_bm5yg")
+theme_override_fonts/italics_font = ExtResource("6_b3fse")
+theme_override_fonts/mono_font = ExtResource("7_utmgb")
 theme_override_font_sizes/normal_font_size = 10
 theme_override_font_sizes/bold_font_size = 10
 theme_override_font_sizes/bold_italics_font_size = 10

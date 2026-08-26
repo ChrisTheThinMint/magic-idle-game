@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://m1tq3ym602a5"]
 
 [ext_resource type="Script" uid="uid://db4rmo4gj0b8y" path="res://Scripts/Activity_UI.gd" id="1_o4o0c"]
+[ext_resource type="FontFile" uid="uid://b4q6nn6ag2s40" path="res://libertinusserif-bold.otf" id="2_kybm7"]
 [ext_resource type="Script" uid="uid://coqwnstoj346c" path="res://addons/tooltips_pro/scripts/tooltip_trigger.gd" id="2_o4o0c"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4v7s"]
@@ -18,6 +19,7 @@ script = ExtResource("1_o4o0c")
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_kybm7")
 theme_override_font_sizes/font_size = 12
 toggle_mode = true
 script = ExtResource("2_o4o0c")

@@ -1,6 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://dljct6m2ai7uo"]
 
-[ext_resource type="FontFile" uid="uid://cfyjclbfoleia" path="res://libertinusmono-regular.otf" id="1_x825c"]
+[ext_resource type="FontFile" uid="uid://c7k513kfb7ckh" path="res://libertinusserif-regular.otf" id="1_x825c"]
 
 [resource]
 default_font = ExtResource("1_x825c")
