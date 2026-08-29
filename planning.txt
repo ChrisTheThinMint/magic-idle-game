@@ -1,0 +1,33 @@
+
+NEW ADDITIONS:
+- Modifier system
+- Attributes
+- Choices/Storylets
+- Codex w/ tutorials, memories and lore
+- Furniture/Equipment (Floor space/slots w/ modifiers)
+- Game phases
+
+OTHER FEATURES:
+- UI layout with Activity categories
+- Attribute/Resource/Quality display
+- Dynamic description for qualities, based on value
+- Full tooltips for resources and qualities
+- In-line tooltips for mentioned activities/resources/qualities
+- support new effect structure in resources & qualities
+
+CHANGES TO ACTIVITIES:
+- Milestones
+- Catalysts
+- Instant activities
+- Random chances
+- Random costs
+- Full state system (locked/secret/hidden)
+- Requirement hints in tooltips
+
+OTHER THINGS TO DO
+- Localization
+- Save/Load
+- JSON validation?
+- Main Menu?
+- Organize game files
+- Export testing
