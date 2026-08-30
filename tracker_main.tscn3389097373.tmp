@@ -6,11 +6,11 @@
 [ext_resource type="FontFile" uid="uid://ravms16mjtbc" path="res://libertinusserif-regular.otf" id="4_vykkw"]
 [ext_resource type="FontFile" uid="uid://cvycl4yf2n37p" path="res://libertinusserif-italic.otf" id="5_afk6v"]
 [ext_resource type="FontFile" uid="uid://b7mv3hlvur5qm" path="res://libertinusmono-regular.otf" id="6_cj43u"]
+[ext_resource type="Texture2D" uid="uid://b87xbl54atafo" path="res://addons/tooltips_pro/examples/resources/styles/PinTexture.png" id="6_vykkw"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7mycd"]
 
 [node name="TrackerMain" type="VBoxContainer" unique_id=1817724180]
-propagate_maximum_size = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -50,7 +50,6 @@ button_pressed = true
 text = "Resources"
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=971910846]
-propagate_maximum_size = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -60,7 +59,6 @@ theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 4
 
 [node name="ScrollContainer_Left" type="ScrollContainer" parent="MarginContainer" unique_id=379930830]
-clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -68,7 +66,6 @@ horizontal_scroll_mode = 0
 vertical_scroll_mode = 4
 
 [node name="Panel" type="VBoxContainer" parent="MarginContainer/ScrollContainer_Left" unique_id=1160882826]
-propagate_maximum_size = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -87,12 +84,10 @@ bbcode_enabled = true
 text = "[center][b][u]Attributes[/u][/b][/center]"
 fit_content = true
 
-[node name="AttributeContainer" type="HFlowContainer" parent="MarginContainer/ScrollContainer_Left/Panel/AttributeTracker" unique_id=180070412]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/ScrollContainer_Left/Panel/AttributeTracker" unique_id=1214478122]
 layout_mode = 2
 
 [node name="QualityTracker" type="VBoxContainer" parent="MarginContainer/ScrollContainer_Left/Panel" unique_id=1909788770]
-propagate_maximum_size = false
-clip_contents = true
 layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer_Left/Panel/QualityTracker" unique_id=1744781870]
@@ -105,9 +100,7 @@ bbcode_enabled = true
 text = "[center][b][u]Qualities[/u][/b][/center]"
 fit_content = true
 
-[node name="QualityContainer" type="HFlowContainer" parent="MarginContainer/ScrollContainer_Left/Panel/QualityTracker" unique_id=133299737]
-propagate_maximum_size = false
-clip_contents = true
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/ScrollContainer_Left/Panel/QualityTracker" unique_id=465901975]
 layout_mode = 2
 
 [node name="ResourceTracker" type="VBoxContainer" parent="MarginContainer/ScrollContainer_Left/Panel" unique_id=462218044]
@@ -123,10 +116,32 @@ bbcode_enabled = true
 text = "[center][b][u]Resources[/u][/b][/center]"
 fit_content = true
 
-[node name="ResourceContainer" type="HFlowContainer" parent="MarginContainer/ScrollContainer_Left/Panel/ResourceTracker" unique_id=1429898405]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/ScrollContainer_Left/Panel/ResourceTracker" unique_id=58755312]
 layout_mode = 2
-theme_override_constants/h_separation = 4
-theme_override_constants/v_separation = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer_Left/Panel/ResourceTracker/GridContainer" unique_id=851781305]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer_Left/Panel/ResourceTracker/GridContainer/HBoxContainer" unique_id=1684704686]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Test"
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="MarginContainer/ScrollContainer_Left/Panel/ResourceTracker/GridContainer/HBoxContainer" unique_id=1946112051]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="MarginContainer/ScrollContainer_Left/Panel/ResourceTracker/GridContainer/HBoxContainer" unique_id=1142389381]
+custom_maximum_size = Vector2(32, 32)
+layout_mode = 2
+theme_override_constants/icon_max_width = 32
+toggle_mode = true
+icon = ExtResource("6_vykkw")
+flat = true
+icon_alignment = 1
 
 [node name="SearchBar" type="HBoxContainer" parent="." unique_id=474574583]
 layout_mode = 2
@@ -170,11 +185,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_7mycd")
 placeholder_text = "Search..."
 caret_blink = true
 
-[connection signal="resized" from="." to="." method="_on_resized"]
 [connection signal="toggled" from="ToggleBar/AttributeToggle" to="." method="_on_attribute_toggle_toggled"]
 [connection signal="toggled" from="ToggleBar/QualityToggle" to="." method="_on_quality_toggle_toggled"]
 [connection signal="toggled" from="ToggleBar/ResourceToggle" to="." method="_on_resource_toggle_toggled"]
-[connection signal="resized" from="MarginContainer/ScrollContainer_Left/Panel/AttributeTracker/AttributeContainer" to="." method="_on_attribute_container_resized"]
-[connection signal="resized" from="MarginContainer/ScrollContainer_Left/Panel/QualityTracker/QualityContainer" to="." method="_on_quality_container_resized"]
-[connection signal="resized" from="MarginContainer/ScrollContainer_Left/Panel/ResourceTracker/ResourceContainer" to="." method="_on_resource_container_resized"]
 [connection signal="button_up" from="SearchBar/ResetSearchButton" to="." method="_on_reset_search_button_button_up"]

@@ -1,5 +1,7 @@
 extends HBoxContainer
 
+@onready var tracker_main: VBoxContainer = $".."
+
 @onready var button: Button = $Button
 @onready var option_button: OptionButton = $OptionButton
 @onready var line_edit: LineEdit = $LineEdit

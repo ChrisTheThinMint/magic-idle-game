@@ -27,9 +27,9 @@ var ResourceData = {
 
 var ResourceCount = {}
 
-signal resource_added()
-signal resource_removed()
-signal resource_changed()
+signal resource_added(resource: String, amount: int)
+signal resource_removed(resource: String)
+signal resource_changed(resource: String, amount: int)
 
 const MAX = int(1e10)
 
@@ -69,11 +69,13 @@ func get_max(resource: String) -> int:
 func set_amount(resource: String, amount: int) -> int:
 	if(is_valid(resource)):
 		var new_amount = clampi(amount, 0, get_max(resource))
-		ResourceCount.set(resource, new_amount)
+		
 		if(not is_active(resource)):
-			resource_added.emit()
+			resource_added.emit(resource, new_amount)
 		else: 
-			resource_changed.emit()
+			resource_changed.emit(resource, new_amount)
+			
+		ResourceCount.set(resource, new_amount)
 		return new_amount
 	else:
 		push_error("Trying to add an invalid quality with resource %s" % resource)
@@ -87,8 +89,8 @@ func add_amount(resource: String, amount: int) -> int:
 func remove_resource(resource: String):
 	if(is_valid(resource)):
 		if(is_active(resource)):
+			resource_removed.emit(resource)
 			ResourceCount.erase(resource)
-			resource_removed.emit()
 	else:
 		push_error("Trying to remove an invalid resource with resource %s" % resource)
 	pass
