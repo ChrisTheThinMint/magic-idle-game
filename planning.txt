@@ -2,6 +2,7 @@
 NEW ADDITIONS:
 - Modifier system
 - Attributes
+- Processes
 - Choices/Storylets
 - Codex w/ tutorials, memories and lore
 - Furniture/Equipment (Floor space/slots w/ modifiers)
@@ -19,15 +20,18 @@ CHANGES TO ACTIVITIES:
 - Milestones
 - Catalysts
 - Instant activities
-- Random chances
+- Random success chance
 - Random costs
+- Cost refund
 - Full state system (locked/secret/hidden)
 - Requirement hints in tooltips
+- Separate active stacks
 
 OTHER THINGS TO DO
 - Localization
 - Save/Load
-- JSON validation?
-- Main Menu?
 - Organize game files
-- Export testing
+- Web export testing
+- Main Menu?
+- JSON validation?
+- Graph debug?
