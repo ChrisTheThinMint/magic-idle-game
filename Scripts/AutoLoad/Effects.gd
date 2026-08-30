@@ -102,18 +102,22 @@ func process_effect(input: Dictionary) -> bool:
 		return false
 	
 	var arguments = []
+	var default_arguments = []
 	if(effect.has("arguments")):
 		arguments = effect.get("arguments")
+	if(effect.has("default_arguments")):
+		default_arguments = effect.get("default_arguments")
 	var target_arguments = get_target_arguments(singleton, method)
 	var final_arguments = []
 	
 	for arg in target_arguments:
 		var arg_name = arg.get("name")
 		
-		if(arguments.has(arg_name) && input.has(arg_name)):
-			final_arguments.append(input.get(arg_name))
-		else:
-			final_arguments.append(null)
+		if(arguments.has(arg_name)):
+			if(input.has(arg_name)):
+				final_arguments.append(input.get(arg_name))
+			elif(default_arguments.has(arg_name)):
+				final_arguments.append(default_arguments.get(arg_name))
 	
 	if(final_arguments.size() != singleton.get_method_argument_count(method)):
 		return false
