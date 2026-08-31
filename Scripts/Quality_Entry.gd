@@ -7,19 +7,18 @@ extends Node
 
 var pinned = false
 var my_quality = ""
+var tracker_main = null
 
-func setup(new_quality: String):
+func setup(new_quality: String, tracker: Node):
 	my_quality = new_quality
+	tracker_main = tracker
 	
-	set_title(true)
+	update()
 	pass
 
-func set_title(silent: bool = false):
+func update():
 	var new_text = Qualities.get_loc(my_quality, "title")
-	rich_text_label.text = Qualities.get_loc(my_quality, "title")
-	
-	#if(not silent):
-	#	update_tooltip()
+	rich_text_label.text = new_text
 	pass
 
 func _on_mouse_entered() -> void:
@@ -33,4 +32,7 @@ func _on_mouse_exited() -> void:
 
 func _on_pin_button_toggled(toggled_on: bool) -> void:
 	pinned = toggled_on
+	
+	if(!pinned):
+		tracker_main._on_quality_unpin(self)
 	pass # Replace with function body.

@@ -6,36 +6,27 @@ extends Node
 @onready var control: Control = $HBoxContainer/Control
 @onready var pin_button: Button = $HBoxContainer/Control/PinButton
 
-
 var pinned = false
 var my_resource = ""
+var tracker_main = null
 
-func setup(new_resource: String, new_amount: int = 0):
+func setup(new_resource: String, tracker: Node):
 	my_resource = new_resource
+	tracker_main = tracker
 	
-	#set_title(Resources.get_loc(my_resource, "title", true))
-	#set_amount(amount, Resources.get_max(my_resource))
-	
-	set_title(Resources.get_loc(my_resource, "title", true))
-	set_amount(new_amount)
+	update()
 	pass
 
-func set_title(text: String, silent: bool = false):
-	rich_text_label.text = text
+func update():
+	rich_text_label.text = Resources.get_loc(my_resource, "title", true)
 	
-	#if(not silent):
-	#	update_tooltip()
-	pass
-
-func set_amount(amount: int):
+	var amount = Resources.get_amount(my_resource)
 	var max_amount = Resources.get_max(my_resource)
 	
 	if(max_amount != Resources.MAX):
 		rich_text_label_2.text = "%s/%s" % [amount, max_amount]
 	else:
 		rich_text_label_2.text = "%s" % amount
-	
-	#	update_tooltip()
 	pass
 
 func _on_mouse_entered() -> void:
@@ -49,4 +40,7 @@ func _on_mouse_exited() -> void:
 
 func _on_pin_button_toggled(toggled_on: bool) -> void:
 	pinned = toggled_on
+	
+	if(!pinned):
+		tracker_main._on_resource_unpin(self)
 	pass # Replace with function body.

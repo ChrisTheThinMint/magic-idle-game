@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://dvxqd61xnjoug"]
 
-[ext_resource type="Script" uid="uid://ev5df4p4g5vh" path="res://Quality_Entry.gd" id="1_qeyfk"]
-[ext_resource type="FontFile" uid="uid://cb0rmayu7fatq" path="res://libertinusserif-semibold.otf" id="2_e3rr4"]
-[ext_resource type="FontFile" uid="uid://dxhwu7ob8ey5i" path="res://libertinusserif-bold.otf" id="3_058yp"]
-[ext_resource type="FontFile" uid="uid://ccj53tk6dotsm" path="res://libertinusserif-bolditalic.otf" id="4_p78y2"]
-[ext_resource type="FontFile" uid="uid://cvycl4yf2n37p" path="res://libertinusserif-italic.otf" id="5_y5jab"]
-[ext_resource type="FontFile" uid="uid://b7mv3hlvur5qm" path="res://libertinusmono-regular.otf" id="6_81826"]
-[ext_resource type="Texture2D" uid="uid://b87xbl54atafo" path="res://addons/tooltips_pro/examples/resources/styles/PinTexture.png" id="7_gil7u"]
+[ext_resource type="Script" uid="uid://ev5df4p4g5vh" path="res://Scripts/Quality_Entry.gd" id="1_71u33"]
+[ext_resource type="FontFile" uid="uid://cb0rmayu7fatq" path="res://libertinusserif-semibold.otf" id="2_nd6xn"]
+[ext_resource type="FontFile" uid="uid://dxhwu7ob8ey5i" path="res://libertinusserif-bold.otf" id="3_x3j80"]
+[ext_resource type="FontFile" uid="uid://ccj53tk6dotsm" path="res://libertinusserif-bolditalic.otf" id="4_mwe5d"]
+[ext_resource type="FontFile" uid="uid://cvycl4yf2n37p" path="res://libertinusserif-italic.otf" id="5_ws8io"]
+[ext_resource type="FontFile" uid="uid://b7mv3hlvur5qm" path="res://libertinusmono-regular.otf" id="6_kuypl"]
+[ext_resource type="Texture2D" uid="uid://b87xbl54atafo" path="res://addons/tooltips_pro/examples/resources/styles/PinTexture.png" id="7_lhi8q"]
 
 [node name="QualityEntry" type="Panel" unique_id=1617923620]
 custom_minimum_size = Vector2(300, 16)
@@ -24,7 +24,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("1_qeyfk")
+script = ExtResource("1_71u33")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=935847686]
 custom_minimum_size = Vector2(0, 16)
@@ -48,11 +48,11 @@ custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
-theme_override_fonts/normal_font = ExtResource("2_e3rr4")
-theme_override_fonts/bold_font = ExtResource("3_058yp")
-theme_override_fonts/bold_italics_font = ExtResource("4_p78y2")
-theme_override_fonts/italics_font = ExtResource("5_y5jab")
-theme_override_fonts/mono_font = ExtResource("6_81826")
+theme_override_fonts/normal_font = ExtResource("2_nd6xn")
+theme_override_fonts/bold_font = ExtResource("3_x3j80")
+theme_override_fonts/bold_italics_font = ExtResource("4_mwe5d")
+theme_override_fonts/italics_font = ExtResource("5_ws8io")
+theme_override_fonts/mono_font = ExtResource("6_kuypl")
 theme_override_font_sizes/normal_font_size = 12
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 scroll_active = false
@@ -76,7 +76,7 @@ grow_vertical = 2
 mouse_filter = 1
 theme_override_constants/icon_max_width = 12
 toggle_mode = true
-icon = ExtResource("7_gil7u")
+icon = ExtResource("7_lhi8q")
 icon_alignment = 1
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
