@@ -62,12 +62,12 @@ func set_amount(quality: String, amount: int) -> int:
 	if(is_valid(quality)):
 		var final_amount = clampi(amount, 0, MAX)
 		
+		QualityCount.set(quality, final_amount)
+		
 		if(not is_active(quality)):
 			quality_added.emit(quality, final_amount)
 		else: 
 			quality_changed.emit(quality, final_amount)
-		
-		QualityCount.set(quality, final_amount)
 		return final_amount
 	else:
 		push_error("Trying to add an invalid quality %s with amount %s" % [quality, amount])

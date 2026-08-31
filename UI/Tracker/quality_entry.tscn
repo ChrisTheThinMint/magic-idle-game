@@ -52,6 +52,7 @@ theme_override_fonts/bold_italics_font = ExtResource("4_mwe5d")
 theme_override_fonts/italics_font = ExtResource("5_ws8io")
 theme_override_fonts/mono_font = ExtResource("6_kuypl")
 theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 scroll_active = false
 autowrap_mode = 0

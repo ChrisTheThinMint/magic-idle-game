@@ -17,8 +17,12 @@ func setup(new_quality: String, tracker: Node):
 	pass
 
 func update():
-	var new_text = Qualities.get_loc(my_quality, "title")
-	rich_text_label.text = new_text
+	var title = Qualities.get_loc(my_quality, "title")
+	
+	if(not Qualities.is_active(my_quality)):
+		rich_text_label.text = "[color=Red]" + title + "[/color]"
+	else:
+		rich_text_label.text = title
 	pass
 
 func _on_mouse_entered() -> void:

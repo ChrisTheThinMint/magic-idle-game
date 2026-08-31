@@ -70,6 +70,7 @@ func _on_activity_stopped(activity: String, _last_completion: bool = false):
 		else:
 			activity_entries.erase(activity)
 			activity_container.remove_child(entry)
+			
 			entry.queue_free()
 	pass
 
