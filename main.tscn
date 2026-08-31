@@ -30,7 +30,7 @@ grow_vertical = 2
 drag_nested_intersections = true
 
 [node name="TrackerBody" type="MarginContainer" parent="HSplitContainer" unique_id=381207900]
-custom_minimum_size = Vector2(330, 0)
+custom_minimum_size = Vector2(340, 0)
 custom_maximum_size = Vector2(500, -1)
 clip_contents = true
 layout_mode = 2

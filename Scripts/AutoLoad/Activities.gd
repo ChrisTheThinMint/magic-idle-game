@@ -529,6 +529,7 @@ func stop_activity(activity: String):
 	pass
 
 func lock_activity(activity: String):
+	set_locked(activity, true)
 	var activity_UI: Activity_UI = get_activity_ui(activity)
 	if activity_UI:
 		activity_UI.lock()
@@ -544,6 +545,7 @@ func lock_activity(activity: String):
 	pass
 
 func unlock_activity(activity: String):
+	set_locked(activity, false)
 	var activity_UI: Activity_UI = get_activity_ui(activity)
 	if activity_UI:
 		activity_UI.unlock()

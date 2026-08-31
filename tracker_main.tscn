@@ -74,6 +74,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ActivityTracker" type="VBoxContainer" parent="MarginContainer/ScrollContainer_Left/Panel" unique_id=148616826]
+visible = false
 layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer_Left/Panel/ActivityTracker" unique_id=544383672]
@@ -92,8 +93,8 @@ vertical_alignment = 2
 layout_mode = 2
 
 [node name="QualityTracker" type="VBoxContainer" parent="MarginContainer/ScrollContainer_Left/Panel" unique_id=1909788770]
+visible = false
 propagate_maximum_size = false
-clip_contents = true
 layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer_Left/Panel/QualityTracker" unique_id=1744781870]
@@ -110,10 +111,10 @@ vertical_alignment = 2
 
 [node name="QualityContainer" type="HFlowContainer" parent="MarginContainer/ScrollContainer_Left/Panel/QualityTracker" unique_id=133299737]
 propagate_maximum_size = false
-clip_contents = true
 layout_mode = 2
 
 [node name="ResourceTracker" type="VBoxContainer" parent="MarginContainer/ScrollContainer_Left/Panel" unique_id=462218044]
+visible = false
 layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer_Left/Panel/ResourceTracker" unique_id=1946628784]
@@ -130,11 +131,10 @@ vertical_alignment = 2
 
 [node name="ResourceContainer" type="HFlowContainer" parent="MarginContainer/ScrollContainer_Left/Panel/ResourceTracker" unique_id=1429898405]
 layout_mode = 2
-theme_override_constants/h_separation = 4
+theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 8
 
 [node name="SearchBar" type="HBoxContainer" parent="." unique_id=474574583]
-visible = false
 layout_mode = 2
 
 [node name="ResetSearchButton" type="Button" parent="SearchBar" unique_id=359870834]
