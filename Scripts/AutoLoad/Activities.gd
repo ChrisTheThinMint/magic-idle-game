@@ -13,7 +13,7 @@ extends Node
 signal activity_started(activity: String)
 signal activity_progressed(activity: String, progress: float)
 signal activity_stopped(activity: String)
-signal activity_completed(activity: String)
+signal activity_completed(activity: String, last_completion: bool)
 signal activity_restarted(activity: String)
 signal activity_locked(activity: String)
 signal activity_unlocked(activity: String)
@@ -380,6 +380,7 @@ func process_activity(activity: String, delta: float):
 		if(lock):
 			progress = 0
 			set_progress(activity, 0)
+			stop_activity(activity)
 			lock_activity(activity)
 		else:
 			progress -= goal
@@ -503,9 +504,10 @@ func restart_activity(activity: String, progress: float):
 		
 		CurrentActivities.erase(activity)
 		
+		activity_stopped.emit(activity, progress)
 		## Use separate log statement to avoid weird grammar
 		if(ActivityData.get(activity).has("LOC_missing_costs_restart_message")):
-			var text = ActivityData.get(activity).get("mLOC_issing_costs_restart_message")
+			var text = ActivityData.get(activity).get("LOC_missing_costs_restart_message")
 			GameLog.add_message(text)
 		else:
 			GameLog.add_message("You can't do this anymore!")
@@ -527,6 +529,7 @@ func stop_activity(activity: String):
 	pass
 
 func lock_activity(activity: String):
+	set_locked(activity, true)
 	var activity_UI: Activity_UI = get_activity_ui(activity)
 	if activity_UI:
 		activity_UI.lock()
@@ -542,6 +545,7 @@ func lock_activity(activity: String):
 	pass
 
 func unlock_activity(activity: String):
+	set_locked(activity, false)
 	var activity_UI: Activity_UI = get_activity_ui(activity)
 	if activity_UI:
 		activity_UI.unlock()
@@ -558,7 +562,6 @@ func complete_activity(activity: String) -> bool:
 	var max_completions = get_max_completions(activity)
 	
 	Activities.set_completions(activity, completions)
-	activity_completed.emit(activity)
 	
 	var last_completion = false if completions < max_completions else true
 	if(last_completion && ActivityData.get(activity).has("LOC_complete_last_message")):
@@ -567,6 +570,8 @@ func complete_activity(activity: String) -> bool:
 	elif(ActivityData.get(activity).has("LOC_complete_message")):
 		var text = ActivityData.get(activity).get("LOC_complete_message")
 		GameLog.add_message(text)
+	
+	activity_completed.emit(activity, last_completion)
 	
 	process_effects(activity)
 	set_paid(activity, false)

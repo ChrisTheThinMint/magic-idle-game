@@ -22,14 +22,18 @@ var QualityData = {
 				"permanent": false
 			}
 		}
+	},
+	"debug_quality_3": {
+		"LOC_title": "A Line of Horrendeously Excessive And Quite Unnecessary Length",
+		"LOC_desc": "The beginning is certain, but what lies beyond is not."
 	}
 }
 
 var QualityCount = {}
 
-signal quality_added()
-signal quality_removed()
-signal quality_changed()
+signal quality_added(quality: String, value: int)
+signal quality_changed(quality: String, value: int)
+signal quality_removed(quality: String)
 
 const MAX = int(1e10)
 
@@ -57,11 +61,13 @@ func get_amount(quality: String) -> int:
 func set_amount(quality: String, amount: int) -> int:
 	if(is_valid(quality)):
 		var final_amount = clampi(amount, 0, MAX)
+		
 		QualityCount.set(quality, final_amount)
+		
 		if(not is_active(quality)):
-			quality_added.emit()
+			quality_added.emit(quality, final_amount)
 		else: 
-			quality_changed.emit()
+			quality_changed.emit(quality, final_amount)
 		return final_amount
 	else:
 		push_error("Trying to add an invalid quality %s with amount %s" % [quality, amount])
@@ -75,7 +81,7 @@ func remove_quality(quality: String):
 	if(is_valid(quality)):
 		if(is_active(quality)):
 			QualityCount.erase(quality)
-			quality_removed.emit()
+		quality_removed.emit(quality)
 	else:
 		push_error("Trying to remove an invalid quality with quality %s" % quality)
 	pass

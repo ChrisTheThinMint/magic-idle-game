@@ -10,6 +10,8 @@ var MessageRepeats = 0
 signal log_updated(new_message: Dictionary)
 
 func _ready() -> void:
+	for i in 100:
+		add_message("TEST")
 	pass
 
 func add_message(text: String):

@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://cyidwdg1ku1xq"]
+
+[ext_resource type="Script" uid="uid://dsuss84dw74bo" path="res://Scripts/Resource_Entry.gd" id="1_2abxi"]
+[ext_resource type="FontFile" uid="uid://cb0rmayu7fatq" path="res://libertinusserif-semibold.otf" id="2_w0qrt"]
+[ext_resource type="FontFile" uid="uid://dxhwu7ob8ey5i" path="res://libertinusserif-bold.otf" id="3_vm571"]
+[ext_resource type="FontFile" uid="uid://ccj53tk6dotsm" path="res://libertinusserif-bolditalic.otf" id="4_av7ni"]
+[ext_resource type="FontFile" uid="uid://cvycl4yf2n37p" path="res://libertinusserif-italic.otf" id="5_s5aw5"]
+[ext_resource type="FontFile" uid="uid://b7mv3hlvur5qm" path="res://libertinusmono-regular.otf" id="6_je37m"]
+[ext_resource type="Texture2D" uid="uid://b87xbl54atafo" path="res://addons/tooltips_pro/examples/resources/styles/PinTexture.png" id="7_e8j22"]
+
+[node name="ResourceEntry" type="Panel" unique_id=1617923620]
+custom_minimum_size = Vector2(150, 16)
+custom_maximum_size = Vector2(150, -1)
+anchors_preset = -1
+anchor_right = 0.117000006
+anchor_bottom = 0.020000001
+offset_right = 0.23999023
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_2abxi")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=935847686]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Spacer" type="Control" parent="HBoxContainer" unique_id=1538056701]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer" unique_id=886006698]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("2_w0qrt")
+theme_override_fonts/bold_font = ExtResource("3_vm571")
+theme_override_fonts/bold_italics_font = ExtResource("4_av7ni")
+theme_override_fonts/italics_font = ExtResource("5_s5aw5")
+theme_override_fonts/mono_font = ExtResource("6_je37m")
+theme_override_font_sizes/normal_font_size = 12
+text = "Lorem ipsum dolor sit amet"
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="HBoxContainer" unique_id=1026940824]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("2_w0qrt")
+theme_override_fonts/bold_font = ExtResource("3_vm571")
+theme_override_fonts/bold_italics_font = ExtResource("4_av7ni")
+theme_override_fonts/italics_font = ExtResource("5_s5aw5")
+theme_override_fonts/mono_font = ExtResource("6_je37m")
+theme_override_font_sizes/normal_font_size = 12
+text = "######"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="HBoxContainer" unique_id=2036601024]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 1
+
+[node name="PinButton" type="Button" parent="HBoxContainer/Control" unique_id=1969021919]
+visible = false
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_constants/icon_max_width = 12
+toggle_mode = true
+icon = ExtResource("7_e8j22")
+icon_alignment = 1
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="toggled" from="HBoxContainer/Control/PinButton" to="." method="_on_pin_button_toggled"]
