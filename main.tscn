@@ -5,8 +5,12 @@
 [ext_resource type="Script" uid="uid://cdqqcjvlqrrog" path="res://Scripts/LogDisplay.gd" id="2_0xm2m"]
 [ext_resource type="Script" uid="uid://o4l2kbmriymr" path="res://addons/tooltips_pro/examples/scripts/example_input_manager.gd" id="3_h2yge"]
 [ext_resource type="PackedScene" uid="uid://drkwmbkco6vyw" path="res://tracker_main.tscn" id="3_lquwl"]
+[ext_resource type="PackedScene" uid="uid://b4cr6qf5qfp54" path="res://storylet_view.tscn" id="5_5vw27"]
 [ext_resource type="Script" uid="uid://5a6lyolbsu0" path="res://Debug_PauseButton.gd" id="5_7mycd"]
 [ext_resource type="Script" uid="uid://b3yfjkayl0llj" path="res://GameLog_CustomEntry.gd" id="7_272bh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5vw27"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [node name="Main" type="Control" unique_id=1843407477]
 layout_mode = 3
@@ -79,9 +83,12 @@ theme_override_constants/margin_bottom = 4
 [node name="TabContainer" type="TabContainer" parent="HSplitContainer/HSplitContainer2/MarginContainer" unique_id=905296507]
 layout_mode = 2
 size_flags_horizontal = 3
-current_tab = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_5vw27")
+current_tab = 1
+tabs_visible = false
 
 [node name="Activities" type="CenterContainer" parent="HSplitContainer/HSplitContainer2/MarginContainer/TabContainer" unique_id=1613369206]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -95,10 +102,8 @@ size_flags_vertical = 3
 script = ExtResource("1_0xm2m")
 category = "debug"
 
-[node name="Storylet" type="Control" parent="HSplitContainer/HSplitContainer2/MarginContainer/TabContainer" unique_id=445710421]
-visible = false
+[node name="StoryletView" parent="HSplitContainer/HSplitContainer2/MarginContainer/TabContainer" unique_id=245103338 instance=ExtResource("5_5vw27")]
 layout_mode = 2
-metadata/_tab_index = 1
 
 [node name="GameLogBody" type="Panel" parent="HSplitContainer/HSplitContainer2" unique_id=1367536915]
 custom_minimum_size = Vector2(330, 0)

@@ -1,0 +1,227 @@
+[gd_scene format=3 uid="uid://b4cr6qf5qfp54"]
+
+[ext_resource type="Theme" uid="uid://dljct6m2ai7uo" path="res://Theme/BaseTheme.tres" id="1_naf8p"]
+[ext_resource type="FontFile" uid="uid://dxhwu7ob8ey5i" path="res://libertinusserif-bold.otf" id="2_7vylp"]
+[ext_resource type="FontFile" uid="uid://cb0rmayu7fatq" path="res://libertinusserif-semibold.otf" id="3_g4rsw"]
+[ext_resource type="FontFile" uid="uid://dhbqgx77udkeg" path="res://libertinusserif-semibolditalic.otf" id="4_m500l"]
+[ext_resource type="FontFile" uid="uid://cvycl4yf2n37p" path="res://libertinusserif-italic.otf" id="5_wo28g"]
+[ext_resource type="FontFile" uid="uid://b7mv3hlvur5qm" path="res://libertinusmono-regular.otf" id="6_1gopn"]
+
+[node name="StoryletView" type="VBoxContainer" unique_id=197031147]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_naf8p")
+metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1221402812]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Button" type="Button" parent="MarginContainer" unique_id=573976789]
+custom_minimum_size = Vector2(180, 30)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_7vylp")
+theme_override_font_sizes/font_size = 18
+text = "<- PERHAPS NOT"
+
+[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=1423492432]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 15
+
+[node name="Panel" type="Panel" parent="MarginContainer2" unique_id=1673066268]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2" unique_id=1575231550]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer2/MarginContainer" unique_id=1295625048]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer2/MarginContainer/VBoxContainer" unique_id=1074588195]
+clip_contents = false
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_7vylp")
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "[u]Your Future"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="MarginContainer2/MarginContainer/VBoxContainer" unique_id=700073057]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/bold_font = ExtResource("3_g4rsw")
+theme_override_fonts/bold_italics_font = ExtResource("4_m500l")
+theme_override_fonts/italics_font = ExtResource("5_wo28g")
+theme_override_fonts/mono_font = ExtResource("6_1gopn")
+bbcode_enabled = true
+text = "At this rate, you won't remain an Apprentice forever. Your Master urges you to consider your future, and so you do. If you want to pursue greater ambitions, you'll have to choose the right career, and you'll have to earn it, too.
+
+On the other hand, there are always alternative paths, especially if you happen to be in trouble. It won't be easy, but they can't force you to forget what you've already learned...
+
+[b]If you've already qualified, you can choose your next career step here. Otherwise, you may peruse the options to get an idea of what is required.[/b]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1648165383]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer" unique_id=257900515]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Spacer" type="Control" parent="ScrollContainer/HBoxContainer" unique_id=1242391788]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HFlowContainer" type="VBoxContainer" parent="ScrollContainer/HBoxContainer" unique_id=52123647]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer/HBoxContainer/HFlowContainer" unique_id=342789881]
+custom_minimum_size = Vector2(300, 0)
+propagate_maximum_size = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 6
+
+[node name="Panel" type="Panel" parent="ScrollContainer/HBoxContainer/HFlowContainer/MarginContainer" unique_id=923152990]
+propagate_maximum_size = true
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer/HBoxContainer/HFlowContainer/MarginContainer" unique_id=182465922]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/HBoxContainer/HFlowContainer/MarginContainer/MarginContainer" unique_id=142521092]
+layout_mode = 2
+
+[node name="Title" type="RichTextLabel" parent="ScrollContainer/HBoxContainer/HFlowContainer/MarginContainer/MarginContainer/VBoxContainer" unique_id=476851659]
+clip_contents = false
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_7vylp")
+theme_override_font_sizes/normal_font_size = 16
+text = "Become A Student"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="ScrollContainer/HBoxContainer/HFlowContainer/MarginContainer/MarginContainer/VBoxContainer" unique_id=2127009281]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/bold_font = ExtResource("3_g4rsw")
+theme_override_fonts/bold_italics_font = ExtResource("4_m500l")
+theme_override_fonts/italics_font = ExtResource("5_wo28g")
+theme_override_fonts/mono_font = ExtResource("6_1gopn")
+text = "There is, it turns out, still more to learn — you'll simply be learning it alongside several hundred strangers your own age."
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer/HBoxContainer/HFlowContainer/MarginContainer/MarginContainer/VBoxContainer" unique_id=2136875501]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Button" type="Button" parent="ScrollContainer/HBoxContainer/HFlowContainer/MarginContainer/MarginContainer/VBoxContainer/MarginContainer" unique_id=1419198239]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_7vylp")
+theme_override_font_sizes/font_size = 18
+text = "DO THIS"
+
+[node name="MarginContainer2" type="MarginContainer" parent="ScrollContainer/HBoxContainer/HFlowContainer" unique_id=1421898556]
+custom_minimum_size = Vector2(300, 0)
+propagate_maximum_size = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 6
+
+[node name="Panel" type="Panel" parent="ScrollContainer/HBoxContainer/HFlowContainer/MarginContainer2" unique_id=1122207430]
+propagate_maximum_size = true
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer/HBoxContainer/HFlowContainer/MarginContainer2" unique_id=1926541510]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/HBoxContainer/HFlowContainer/MarginContainer2/MarginContainer" unique_id=1232592979]
+layout_mode = 2
+
+[node name="Title" type="RichTextLabel" parent="ScrollContainer/HBoxContainer/HFlowContainer/MarginContainer2/MarginContainer/VBoxContainer" unique_id=1813306297]
+clip_contents = false
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_7vylp")
+theme_override_font_sizes/normal_font_size = 16
+text = "Become An Exile"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="ScrollContainer/HBoxContainer/HFlowContainer/MarginContainer2/MarginContainer/VBoxContainer" unique_id=697362126]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/bold_font = ExtResource("3_g4rsw")
+theme_override_fonts/bold_italics_font = ExtResource("4_m500l")
+theme_override_fonts/italics_font = ExtResource("5_wo28g")
+theme_override_fonts/mono_font = ExtResource("6_1gopn")
+text = "Of course, you could just run away. Flee until no one, not even your master, can find you. Leave it all behind..."
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer/HBoxContainer/HFlowContainer/MarginContainer2/MarginContainer/VBoxContainer" unique_id=1920392516]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Button" type="Button" parent="ScrollContainer/HBoxContainer/HFlowContainer/MarginContainer2/MarginContainer/VBoxContainer/MarginContainer" unique_id=870891943]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_7vylp")
+theme_override_font_sizes/font_size = 18
+text = "DO THIS"
+
+[node name="Spacer2" type="Control" parent="ScrollContainer/HBoxContainer" unique_id=1036561592]
+layout_mode = 2
+size_flags_horizontal = 3
