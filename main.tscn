@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://o4l2kbmriymr" path="res://addons/tooltips_pro/examples/scripts/example_input_manager.gd" id="3_h2yge"]
 [ext_resource type="PackedScene" uid="uid://drkwmbkco6vyw" path="res://tracker_main.tscn" id="3_lquwl"]
 [ext_resource type="Script" uid="uid://5a6lyolbsu0" path="res://Debug_PauseButton.gd" id="5_7mycd"]
+[ext_resource type="Script" uid="uid://b3yfjkayl0llj" path="res://GameLog_CustomEntry.gd" id="7_272bh"]
 
 [node name="Main" type="Control" unique_id=1843407477]
 layout_mode = 3
@@ -28,24 +29,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 4
+theme_override_constants/minimum_grab_thickness = 0
+theme_override_constants/autohide = 0
+collapsed = true
 drag_nested_intersections = true
 
-[node name="TrackerBody" type="MarginContainer" parent="HSplitContainer" unique_id=381207900]
-custom_minimum_size = Vector2(340, 0)
-custom_maximum_size = Vector2(500, -1)
+[node name="TrackerBody" type="Panel" parent="HSplitContainer" unique_id=1133146944]
+custom_minimum_size = Vector2(330, 0)
+custom_maximum_size = Vector2(330, -1)
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
 
-[node name="Panel" type="Panel" parent="HSplitContainer/TrackerBody" unique_id=1129299606]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/TrackerBody/Panel" unique_id=1870214235]
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/TrackerBody" unique_id=1870214235]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -54,49 +51,63 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 
-[node name="TrackerMain" parent="HSplitContainer/TrackerBody/Panel/MarginContainer" unique_id=1817724180 instance=ExtResource("3_lquwl")]
+[node name="TrackerMain" parent="HSplitContainer/TrackerBody/MarginContainer" unique_id=1817724180 instance=ExtResource("3_lquwl")]
 layout_mode = 2
 
 [node name="HSplitContainer2" type="HSplitContainer" parent="HSplitContainer" unique_id=1410093745]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 4
+theme_override_constants/minimum_grab_thickness = 0
+theme_override_constants/autohide = 0
+collapsed = true
 drag_nested_intersections = true
 
-[node name="ActivityBody" type="CenterContainer" parent="HSplitContainer/HSplitContainer2" unique_id=1613369206]
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/HSplitContainer2" unique_id=946931404]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="TabContainer" type="TabContainer" parent="HSplitContainer/HSplitContainer2/MarginContainer" unique_id=905296507]
+layout_mode = 2
+size_flags_horizontal = 3
+current_tab = 0
+
+[node name="Activities" type="CenterContainer" parent="HSplitContainer/HSplitContainer2/MarginContainer/TabContainer" unique_id=1613369206]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
+metadata/_tab_index = 0
 
-[node name="CategoryDebug" type="VBoxContainer" parent="HSplitContainer/HSplitContainer2/ActivityBody" unique_id=1802190980]
+[node name="CategoryDebug" type="VBoxContainer" parent="HSplitContainer/HSplitContainer2/MarginContainer/TabContainer/Activities" unique_id=1802190980]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_0xm2m")
 category = "debug"
 
-[node name="GameLogBody" type="MarginContainer" parent="HSplitContainer/HSplitContainer2" unique_id=917924715]
-custom_minimum_size = Vector2(250, 0)
-custom_maximum_size = Vector2(500, -1)
+[node name="Storylet" type="Control" parent="HSplitContainer/HSplitContainer2/MarginContainer/TabContainer" unique_id=445710421]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="GameLogBody" type="Panel" parent="HSplitContainer/HSplitContainer2" unique_id=1367536915]
+custom_minimum_size = Vector2(330, 0)
+custom_maximum_size = Vector2(330, -1)
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
 
-[node name="Panel" type="Panel" parent="HSplitContainer/HSplitContainer2/GameLogBody" unique_id=1820843656]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/HSplitContainer2/GameLogBody/Panel" unique_id=473363162]
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/HSplitContainer2/GameLogBody" unique_id=473363162]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -104,29 +115,41 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer2" type="MarginContainer" parent="HSplitContainer/HSplitContainer2/GameLogBody/Panel/VBoxContainer" unique_id=148090027]
+[node name="MarginContainer2" type="MarginContainer" parent="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer" unique_id=148090027]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HFlowContainer" type="HFlowContainer" parent="HSplitContainer/HSplitContainer2/GameLogBody/Panel/VBoxContainer/MarginContainer2" unique_id=1751614088]
+[node name="HFlowContainer" type="HFlowContainer" parent="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/MarginContainer2" unique_id=1751614088]
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="CheckButton" type="CheckButton" parent="HSplitContainer/HSplitContainer2/GameLogBody/Panel/VBoxContainer/MarginContainer2/HFlowContainer" unique_id=1107625777]
+[node name="CheckButton" type="CheckButton" parent="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/MarginContainer2/HFlowContainer" unique_id=1107625777]
 layout_mode = 2
 text = "TEST GLOBAL PAUSE"
 script = ExtResource("5_7mycd")
 
-[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/HSplitContainer2/GameLogBody/Panel/VBoxContainer" unique_id=439316158]
+[node name="Panel" type="Panel" parent="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer" unique_id=883372739]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
 
-[node name="LogDisplay" type="RichTextLabel" parent="HSplitContainer/HSplitContainer2/GameLogBody/Panel/VBoxContainer/MarginContainer" unique_id=693795494]
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/Panel" unique_id=439316158]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/Panel/MarginContainer" unique_id=386102265]
+layout_mode = 2
+
+[node name="LogDisplay" type="RichTextLabel" parent="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=693795494]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -140,4 +163,11 @@ scroll_following = true
 scroll_following_visible_characters = true
 script = ExtResource("2_0xm2m")
 
-[connection signal="toggled" from="HSplitContainer/HSplitContainer2/GameLogBody/Panel/VBoxContainer/MarginContainer2/HFlowContainer/CheckButton" to="HSplitContainer/HSplitContainer2/GameLogBody/Panel/VBoxContainer/MarginContainer2/HFlowContainer/CheckButton" method="_on_toggled"]
+[node name="LineEdit" type="LineEdit" parent="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=1461549823]
+visible = false
+layout_mode = 2
+placeholder_text = "Custom log message..."
+script = ExtResource("7_272bh")
+
+[connection signal="toggled" from="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/MarginContainer2/HFlowContainer/CheckButton" to="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/MarginContainer2/HFlowContainer/CheckButton" method="_on_toggled"]
+[connection signal="text_submitted" from="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/Panel/MarginContainer/VBoxContainer/LineEdit" to="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/Panel/MarginContainer/VBoxContainer/LineEdit" method="_on_text_submitted"]

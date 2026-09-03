@@ -135,6 +135,7 @@ theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 8
 
 [node name="SearchBar" type="HBoxContainer" parent="." unique_id=474574583]
+visible = false
 layout_mode = 2
 
 [node name="ResetSearchButton" type="Button" parent="SearchBar" unique_id=359870834]
