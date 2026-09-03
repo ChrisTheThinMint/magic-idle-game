@@ -5,9 +5,11 @@
 [ext_resource type="Script" uid="uid://cdqqcjvlqrrog" path="res://Scripts/LogDisplay.gd" id="2_0xm2m"]
 [ext_resource type="Script" uid="uid://o4l2kbmriymr" path="res://addons/tooltips_pro/examples/scripts/example_input_manager.gd" id="3_h2yge"]
 [ext_resource type="PackedScene" uid="uid://drkwmbkco6vyw" path="res://tracker_main.tscn" id="3_lquwl"]
-[ext_resource type="PackedScene" uid="uid://b4cr6qf5qfp54" path="res://storylet_view.tscn" id="5_5vw27"]
-[ext_resource type="Script" uid="uid://5a6lyolbsu0" path="res://Debug_PauseButton.gd" id="5_7mycd"]
+[ext_resource type="Script" uid="uid://b22lqddxvnir3" path="res://Scripts/Main_View_Tabs.gd" id="4_kek77"]
+[ext_resource type="PackedScene" uid="uid://b4cr6qf5qfp54" path="res://UI/storylet_view.tscn" id="5_5vw27"]
+[ext_resource type="Script" uid="uid://5a6lyolbsu0" path="res://Scripts/Debug/Debug_PauseButton.gd" id="5_7mycd"]
 [ext_resource type="Script" uid="uid://b3yfjkayl0llj" path="res://GameLog_CustomEntry.gd" id="7_272bh"]
+[ext_resource type="Script" uid="uid://c1xegjvul5xfu" path="res://Scripts/Debug/Debug_StoryViewButton.gd" id="8_4c57u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5vw27"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -72,37 +74,39 @@ theme_override_constants/autohide = 0
 collapsed = true
 drag_nested_intersections = true
 
-[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/HSplitContainer2" unique_id=946931404]
+[node name="Control" type="Control" parent="HSplitContainer/HSplitContainer2" unique_id=1101798588]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
 
-[node name="TabContainer" type="TabContainer" parent="HSplitContainer/HSplitContainer2/MarginContainer" unique_id=905296507]
-layout_mode = 2
+[node name="MainViewTabs" type="TabContainer" parent="HSplitContainer/HSplitContainer2/Control" unique_id=905296507]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_5vw27")
-current_tab = 1
+current_tab = 0
 tabs_visible = false
+script = ExtResource("4_kek77")
 
-[node name="Activities" type="CenterContainer" parent="HSplitContainer/HSplitContainer2/MarginContainer/TabContainer" unique_id=1613369206]
-visible = false
+[node name="Activities" type="CenterContainer" parent="HSplitContainer/HSplitContainer2/Control/MainViewTabs" unique_id=1613369206]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 metadata/_tab_index = 0
 
-[node name="CategoryDebug" type="VBoxContainer" parent="HSplitContainer/HSplitContainer2/MarginContainer/TabContainer/Activities" unique_id=1802190980]
+[node name="CategoryDebug" type="VBoxContainer" parent="HSplitContainer/HSplitContainer2/Control/MainViewTabs/Activities" unique_id=1802190980]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_0xm2m")
 category = "debug"
 
-[node name="StoryletView" parent="HSplitContainer/HSplitContainer2/MarginContainer/TabContainer" unique_id=245103338 instance=ExtResource("5_5vw27")]
+[node name="StoryletView" parent="HSplitContainer/HSplitContainer2/Control/MainViewTabs" unique_id=245103338 instance=ExtResource("5_5vw27")]
+visible = false
 layout_mode = 2
 
 [node name="GameLogBody" type="Panel" parent="HSplitContainer/HSplitContainer2" unique_id=1367536915]
@@ -124,15 +128,20 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HFlowContainer" type="HFlowContainer" parent="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/MarginContainer2" unique_id=1751614088]
+[node name="DebugContainer" type="HFlowContainer" parent="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/MarginContainer2" unique_id=1751614088]
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="CheckButton" type="CheckButton" parent="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/MarginContainer2/HFlowContainer" unique_id=1107625777]
+[node name="PauseButton" type="CheckButton" parent="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/MarginContainer2/DebugContainer" unique_id=1107625777]
 layout_mode = 2
 text = "TEST GLOBAL PAUSE"
 script = ExtResource("5_7mycd")
+
+[node name="StoryViewButton" type="CheckButton" parent="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/MarginContainer2/DebugContainer" unique_id=2137949161]
+layout_mode = 2
+text = "FORCE TOGGLE STORY VIEW"
+script = ExtResource("8_4c57u")
 
 [node name="Panel" type="Panel" parent="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer" unique_id=883372739]
 layout_mode = 2
@@ -174,5 +183,6 @@ layout_mode = 2
 placeholder_text = "Custom log message..."
 script = ExtResource("7_272bh")
 
-[connection signal="toggled" from="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/MarginContainer2/HFlowContainer/CheckButton" to="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/MarginContainer2/HFlowContainer/CheckButton" method="_on_toggled"]
+[connection signal="toggled" from="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/MarginContainer2/DebugContainer/PauseButton" to="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/MarginContainer2/DebugContainer/PauseButton" method="_on_toggled"]
+[connection signal="toggled" from="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/MarginContainer2/DebugContainer/StoryViewButton" to="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/MarginContainer2/DebugContainer/StoryViewButton" method="_on_toggled"]
 [connection signal="text_submitted" from="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/Panel/MarginContainer/VBoxContainer/LineEdit" to="HSplitContainer/HSplitContainer2/GameLogBody/VBoxContainer/Panel/MarginContainer/VBoxContainer/LineEdit" method="_on_text_submitted"]

@@ -42,6 +42,12 @@ var EffectData: Dictionary = {
 		"method": "lock_activity",
 		"arguments": [ "activity" ],
 		"LOC_desc": "Lock '{activity}'"
+	},
+	"start_storylet": {
+		"context": "Storylets",
+		"method": "start_storylet",
+		"arguments": [ "storylet" ],
+		"LOC_desc": "Begin '{storylet}'"
 	}
 }
 
@@ -66,6 +72,7 @@ func get_context(context: String) -> Object:
 		"Activities": return Activities
 		"Resources": return Resources
 		"Qualities": return Qualities
+		"Storylets": return Storylets
 		_: return null
 
 func process_effect_list(input: Dictionary) -> bool:
@@ -130,7 +137,7 @@ func get_target_arguments(singleton, method) -> Array:
 	var method_index = method_list.find_custom(is_method_data.bind(method))
 	var method_data = method_list.get(method_index)
 	return method_data.get("args")
-	
+
 func is_method_data(data: Dictionary, method: String) -> bool:
 	return data.get("name") == method
 
@@ -168,6 +175,8 @@ func process_effect_desc(input: Dictionary) -> String:
 					data = Resources.get_loc(data, "title", input.get("amount") > 1)
 				"quality":
 					data = Qualities.get_loc(data, "title")
+				"storylet":
+					data = Storylets.get_loc(data, "title")
 		
 		final_arguments.set(arg, data)
 	

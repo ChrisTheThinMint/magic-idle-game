@@ -32,6 +32,7 @@ func _ready() -> void:
 	Activities.activity_stopped.connect(_on_activity_stopped)
 	Activities.activity_locked.connect(_on_activity_locked)
 	Activities.activity_unlocked.connect(_on_activity_unlocked)
+	Activities.activity_ended.connect(_on_activity_stopped)
 	
 	Activities.activity_paused.connect(_on_activity_updated_global)
 	Activities.activity_unpaused.connect(_on_activity_updated_global)

@@ -1,0 +1,107 @@
+[gd_scene format=3 uid="uid://b4cr6qf5qfp54"]
+
+[ext_resource type="Theme" uid="uid://dljct6m2ai7uo" path="res://Theme/BaseTheme.tres" id="1_naf8p"]
+[ext_resource type="FontFile" uid="uid://dxhwu7ob8ey5i" path="res://libertinusserif-bold.otf" id="2_7vylp"]
+[ext_resource type="Script" uid="uid://dilp1rn8nvvte" path="res://Scripts/Storylet_View.gd" id="2_wo28g"]
+[ext_resource type="FontFile" uid="uid://cb0rmayu7fatq" path="res://libertinusserif-semibold.otf" id="3_g4rsw"]
+[ext_resource type="FontFile" uid="uid://dhbqgx77udkeg" path="res://libertinusserif-semibolditalic.otf" id="4_m500l"]
+[ext_resource type="FontFile" uid="uid://cvycl4yf2n37p" path="res://libertinusserif-italic.otf" id="5_wo28g"]
+[ext_resource type="FontFile" uid="uid://b7mv3hlvur5qm" path="res://libertinusmono-regular.otf" id="6_1gopn"]
+[ext_resource type="PackedScene" uid="uid://mlo5uol2ciwc" path="res://UI/Storylet_Choice.tscn" id="7_m500l"]
+
+[node name="StoryletView" type="VBoxContainer" unique_id=197031147]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_naf8p")
+script = ExtResource("2_wo28g")
+metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1221402812]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Button" type="Button" parent="MarginContainer" unique_id=573976789]
+custom_minimum_size = Vector2(180, 30)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_7vylp")
+theme_override_font_sizes/font_size = 18
+text = "<- RECONSIDER"
+
+[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=1423492432]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 15
+
+[node name="Panel" type="Panel" parent="MarginContainer2" unique_id=1673066268]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2" unique_id=1575231550]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer2/MarginContainer" unique_id=1295625048]
+layout_mode = 2
+
+[node name="TitleLabel" type="RichTextLabel" parent="MarginContainer2/MarginContainer/VBoxContainer" unique_id=1074588195]
+clip_contents = false
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_7vylp")
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "[u]TEST[/u]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="DescLabel" type="RichTextLabel" parent="MarginContainer2/MarginContainer/VBoxContainer" unique_id=700073057]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/bold_font = ExtResource("3_g4rsw")
+theme_override_fonts/bold_italics_font = ExtResource("4_m500l")
+theme_override_fonts/italics_font = ExtResource("5_wo28g")
+theme_override_fonts/mono_font = ExtResource("6_1gopn")
+bbcode_enabled = true
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin laoreet pharetra dui ac elementum. Donec pellentesque efficitur ante sed bibendum. Proin in velit bibendum, bibendum eros eget, ornare lacus. Sed rhoncus, mauris ac commodo laoreet, lectus ex scelerisque nunc, nec imperdiet dolor eros pellentesque sem. Cras ut eros suscipit, volutpat est non, fringilla nisl. Nam volutpat ultricies felis nec eleifend. Vivamus vitae lobortis orci, non tempus erat. Cras ultricies porttitor lorem lobortis scelerisque. Proin lacinia quam eu semper varius. "
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1648165383]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer" unique_id=257900515]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Spacer" type="Control" parent="ScrollContainer/HBoxContainer" unique_id=1242391788]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ChoiceContainer" type="VBoxContainer" parent="ScrollContainer/HBoxContainer" unique_id=52123647]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" parent="ScrollContainer/HBoxContainer/ChoiceContainer" unique_id=1361946146 instance=ExtResource("7_m500l")]
+layout_mode = 2
+
+[node name="Spacer2" type="Control" parent="ScrollContainer/HBoxContainer" unique_id=1036561592]
+layout_mode = 2
+size_flags_horizontal = 3

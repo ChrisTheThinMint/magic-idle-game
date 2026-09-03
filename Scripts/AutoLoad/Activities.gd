@@ -12,6 +12,7 @@ extends Node
 
 signal activity_started(activity: String)
 signal activity_progressed(activity: String, progress: float)
+signal activity_ended(activity: String) # Used only for activities with "does_not_restart"
 signal activity_stopped(activity: String)
 signal activity_completed(activity: String, last_completion: bool)
 signal activity_restarted(activity: String)
@@ -24,217 +25,233 @@ signal activity_unpaused(activity: String)
 const MAX = float(1e10)
 
 var ActivityData = {
-	"debug_1": {
-		"category": "debug",
-		"locked": false,
-		"LOC_title": "Do Something",
-		"LOC_tooltip": "Doing something does typically result in results.",
-		"LOC_start_message": "You start to do something...",
-		"LOC_stop_message": "You stop doing something.",
-		"LOC_complete_message": "You finish doing something!",
-		"goal": 100,
-		"speed": 50,
-		"completions": 0,
-		"effects": {
-			"add_results": {
-				"effect": "add_resource",
-				"resource": "debug_resource",
-				"amount": 5
-			},
-			"set_persistence": {
-				"effect": "set_quality",
-				"quality": "debug_quality_2",
-				"value": 1,
-				"hide_from_tooltip": true
-			}
-		}
-	},
-	"debug_2": {
-		"category": "debug",
-		"locked": false,
-		"LOC_title": "Do Something Else",
-		"LOC_tooltip": "Are you sure you want to do this?",
-		"LOC_start_message": "You start to do something else...",
-		"LOC_stop_message": "You stop doing something else.",
-		"LOC_complete_message": "You finish doing something else!",
-		"LOC_lock_message": "You no longer feel like doing something else.",
-		"goal": 300,
-		"speed": 60,
-		"completions": 0,
-		"effects": {
-			"subtract_results": {
-				"effect": "subtract_resource",
-				"resource": "debug_resource",
-				"amount": 2
-			},
-			"remove_persistence": {
-				"effect": "remove_quality",
-				"quality": "debug_quality_2",
-				"hide_from_tooltip": true
-			}
-		}
-	},
-	"debug_3": {
-		"category": "debug",
-		"locked": false,
-		"LOC_title": "Do Everything",
-		"LOC_tooltip": "Its slow, but its something. Lots of somethings, in fact.",
-		"LOC_start_message": "You try to do everything at once...",
-		"LOC_stop_message": "You stop doing everything.",
-		"LOC_complete_message": "You get something done, but not everything.",
-		"LOC_complete_last_message": "You've done everything you can for now.",
-		"goal": 100,
-		"speed": 50,
-		"completions": 0,
-		"max_completions": 5,
-		"effects": {
-			"add_results": {
-				"effect": "add_resource",
-				"resource": "debug_resource",
-				"amount": 12
-			},
-			"set_persistence": {
-				"effect": "set_quality",
-				"quality": "debug_quality_2",
-				"value": 2,
-				"hide_from_tooltip": true
-			}
-		}
-	},
-	"debug_4": {
-		"category": "debug",
-		"locked": false,
-		"LOC_title": "Prove Something",
-		"LOC_tooltip": "What do you have to prove? What did you accomplish?",
-		"LOC_start_message": "You try to prove that you did something...",
-		"LOC_stop_message": "You are no longer trying to prove something.",
-		"LOC_complete_message": "Your results are invalid now, but they result in something else.",
-		"goal": 100,
-		"speed": 50,
-		"completions": 0,
-		"costs": {
-			"resources": {
-				"debug_resource": 20
-			}
-		},
-		"effects": {
-			"add_favours": {
-				"effect": "add_resource",
-				"resource": "debug_resource_2",
-				"amount": 5
-			}
-		}
-	},
-	"debug_5": {
-		"category": "debug",
-		"locked": false,
-		"LOC_title": "Unlock Something",
-		"LOC_tooltip": "Not everything is obvious at first.",
-		"LOC_start_message": "You try to unlock something...",
-		"LOC_stop_message": "You stop trying to unlock something.",
-		"LOC_restart_message": "You keep trying to unlock something...",
-		"LOC_complete_message": "Whatever it is, you haven't unlocked it yet.",
-		"LOC_complete_last_message": "You have unlocked something new!",
-		"goal": 100,
-		"speed": 50,
-		"max_completions": 1,
-		"effects": {
-			"unlock_something_better": {
-				"effect": "unlock_activity",
-				"activity": "debug_6"
-			}
-		}
-	},
-	"debug_6": {
-		"category": "debug",
-		"locked": true,
-		"LOC_title": "Do Something Better",
-		"LOC_tooltip": "What is better, really? I daresay it's mostly vibes.",
-		"LOC_unlock_message": "You feel like you can do something better.",
-		"LOC_start_message": "You start to do something better...",
-		"LOC_stop_message": "Against your best intentions, you stop doing something better.",
-		"LOC_complete_message": "You finish doing something better, and feel a bit better too.",
-		"goal": 100,
-		"speed": 41.35,
-		"completions": 0,
-		"effects": {
-			"add_results": {
-				"effect": "add_resource",
-				"resource": "debug_resource",
-				"amount": 99
-			},
-			"set_persistence": {
-				"effect": "set_quality",
-				"quality": "debug_quality_2",
-				"value": 4,
-				"hide_from_tooltip": true
-			},
-			"lock_something_else": {
-				"effect": "lock_activity",
-				"activity": "debug_2"
-			}
-		}
-	},
-	"debug_7": {
-		"category": "debug",
-		"locked": true,
-		"LOC_title": "Be Proud Of Something",
-		"LOC_tooltip": "Yes, yes, you did it.",
-		"LOC_start_message": "You start being proud of something...",
-		"LOC_stop_message": "You stop being proud of something.",
-		"LOC_complete_message": "You are done with being proud of something.",
-		"goal": 750,
-		"speed": 1,
-		"completions": 0,
-		"effects": {
-			"add_lots_of_results": {
-				"effect": "add_resource",
-				"resource": "debug_resource",
-				"amount": 250
-			}
-		},
-		"DISPLAY_requirements": {
-			"qualities": {
-				"debug_quality": {
-					"min": 4,
-					"max": 5,
-					"permanent": false
-				}
-			}
-		}
-	},
-	"debug_8": {
-		"category": "debug",
-		"locked": true,
-		"LOC_title": "Enjoy Something",
-		"LOC_tooltip": "Atleast for a little bit.",
-		"LOC_start_message": "You start enjoying something...",
-		"LOC_stop_message": "You stop enjoying something.",
-		"LOC_complete_message": "You are done with enjoying something.",
-		"goal": 4000,
-		"speed": 1,
-		"completions": 0,
-		"effects": {
-			"remove_results": {
-				"effect": "subtract_resource",
-				"resource": "debug_resource",
-				"amount": 25
-			},
-			"remove_favour": {
-				"effect": "subtract_resource",
-				"resource": "debug_resource_2",
-				"amount": 1
-			}
-		},
-		"DISPLAY_requirements": {
-			"resources": {
-				"debug_resource_2": {
-					"min": 10,
-					"permanent": false
-				}
-			}
-		}
+  "debug_1": {
+	"category": "debug",
+	"locked": false,
+	"LOC_title": "Do Something",
+	"LOC_tooltip": "Doing something does typically result in results.",
+	"LOC_start_message": "You start to do something...",
+	"LOC_stop_message": "You stop doing something.",
+	"LOC_complete_message": "You finish doing something!",
+	"goal": 100,
+	"speed": 50,
+	"completions": 0,
+	"effects": {
+	  "add_results": {
+		"effect": "add_resource",
+		"resource": "debug_resource",
+		"amount": 5
+	  },
+	  "set_persistence": {
+		"effect": "set_quality",
+		"quality": "debug_quality_2",
+		"value": 1,
+		"hide_from_tooltip": true
+	  }
 	}
+  },
+  "debug_2": {
+	"category": "debug",
+	"locked": false,
+	"LOC_title": "Do Something Else",
+	"LOC_tooltip": "Are you sure you want to do this?",
+	"LOC_start_message": "You start to do something else...",
+	"LOC_stop_message": "You stop doing something else.",
+	"LOC_complete_message": "You finish doing something else!",
+	"LOC_lock_message": "You no longer feel like doing something else.",
+	"goal": 300,
+	"speed": 60,
+	"completions": 0,
+	"effects": {
+	  "subtract_results": {
+		"effect": "subtract_resource",
+		"resource": "debug_resource",
+		"amount": 2
+	  },
+	  "remove_persistence": {
+		"effect": "remove_quality",
+		"quality": "debug_quality_2",
+		"hide_from_tooltip": true
+	  }
+	}
+  },
+  "debug_3": {
+	"category": "debug",
+	"locked": false,
+	"LOC_title": "Do Everything",
+	"LOC_tooltip": "Its slow, but its something. Lots of somethings, in fact.",
+	"LOC_start_message": "You try to do everything at once...",
+	"LOC_stop_message": "You stop doing everything.",
+	"LOC_complete_message": "You get something done, but not everything.",
+	"LOC_complete_last_message": "You've done everything you can for now.",
+	"goal": 100,
+	"speed": 50,
+	"completions": 0,
+	"max_completions": 5,
+	"effects": {
+	  "add_results": {
+		"effect": "add_resource",
+		"resource": "debug_resource",
+		"amount": 12
+	  },
+	  "set_persistence": {
+		"effect": "set_quality",
+		"quality": "debug_quality_2",
+		"value": 2,
+		"hide_from_tooltip": true
+	  }
+	}
+  },
+  "debug_4": {
+	"category": "debug",
+	"locked": false,
+	"LOC_title": "Prove Something",
+	"LOC_tooltip": "What do you have to prove? What did you accomplish?",
+	"LOC_start_message": "You try to prove that you did something...",
+	"LOC_stop_message": "You are no longer trying to prove something.",
+	"LOC_complete_message": "Your results are invalid now, but they result in something else.",
+	"goal": 100,
+	"speed": 50,
+	"completions": 0,
+	"costs": {
+	  "resources": {
+		"debug_resource": 20
+	  }
+	},
+	"effects": {
+	  "add_favours": {
+		"effect": "add_resource",
+		"resource": "debug_resource_2",
+		"amount": 5
+	  }
+	}
+  },
+  "debug_5": {
+	"category": "debug",
+	"locked": false,
+	"LOC_title": "Unlock Something",
+	"LOC_tooltip": "Not everything is obvious at first.",
+	"LOC_start_message": "You try to unlock something...",
+	"LOC_stop_message": "You stop trying to unlock something.",
+	"LOC_restart_message": "You keep trying to unlock something...",
+	"LOC_complete_message": "Whatever it is, you haven't unlocked it yet.",
+	"LOC_complete_last_message": "You have unlocked something new!",
+	"goal": 100,
+	"speed": 50,
+	"max_completions": 1,
+	"effects": {
+	  "unlock_something_better": {
+		"effect": "unlock_activity",
+		"activity": "debug_6"
+	  }
+	}
+  },
+  "debug_6": {
+	"category": "debug",
+	"locked": true,
+	"LOC_title": "Do Something Better",
+	"LOC_tooltip": "What is better, really? I daresay it's mostly vibes.",
+	"LOC_unlock_message": "You feel like you can do something better.",
+	"LOC_start_message": "You start to do something better...",
+	"LOC_stop_message": "Against your best intentions, you stop doing something better.",
+	"LOC_complete_message": "You finish doing something better, and feel a bit better too.",
+	"goal": 100,
+	"speed": 41.35,
+	"completions": 0,
+	"effects": {
+	  "add_results": {
+		"effect": "add_resource",
+		"resource": "debug_resource",
+		"amount": 99
+	  },
+	  "set_persistence": {
+		"effect": "set_quality",
+		"quality": "debug_quality_2",
+		"value": 4,
+		"hide_from_tooltip": true
+	  },
+	  "lock_something_else": {
+		"effect": "lock_activity",
+		"activity": "debug_2"
+	  }
+	}
+  },
+  "debug_7": {
+	"category": "debug",
+	"locked": true,
+	"LOC_title": "Be Proud Of Something",
+	"LOC_tooltip": "Yes, yes, you did it.",
+	"LOC_start_message": "You start being proud of something...",
+	"LOC_stop_message": "You stop being proud of something.",
+	"LOC_complete_message": "You are done with being proud of something.",
+	"goal": 750,
+	"speed": 1,
+	"completions": 0,
+	"effects": {
+	  "add_lots_of_results": {
+		"effect": "add_resource",
+		"resource": "debug_resource",
+		"amount": 250
+	  }
+	},
+	"DISPLAY_requirements": {
+	  "qualities": {
+		"debug_quality": {
+		  "min": 4,
+		  "max": 5,
+		  "permanent": false
+		}
+	  }
+	}
+  },
+  "debug_8": {
+	"category": "debug",
+	"locked": true,
+	"LOC_title": "Enjoy Something",
+	"LOC_tooltip": "Atleast for a little bit.",
+	"LOC_start_message": "You start enjoying something...",
+	"LOC_stop_message": "You stop enjoying something.",
+	"LOC_complete_message": "You are done with enjoying something.",
+	"goal": 4000,
+	"speed": 1,
+	"completions": 0,
+	"effects": {
+	  "remove_results": {
+		"effect": "subtract_resource",
+		"resource": "debug_resource",
+		"amount": 25
+	  },
+	  "remove_favour": {
+		"effect": "subtract_resource",
+		"resource": "debug_resource_2",
+		"amount": 1
+	  }
+	},
+	"DISPLAY_requirements": {
+	  "resources": {
+		"debug_resource_2": {
+		  "min": 10,
+		  "permanent": false
+		}
+	  }
+	}
+  },
+  "debug_9": {
+	"category": "debug",
+	"LOC_tooltip": "Or, atleast, think that you are.",
+	"LOC_title": "Choose Something",
+	"LOC_start_message": "You prepare to make a choice...",
+	"LOC_stop_message": "You stop before you have to make a choice.",
+	"goal": 100,
+	"speed": 50,
+	"does_not_restart": true,
+	"effects": {
+	  "start_debug_storylet": {
+		"effect": "start_storylet",
+		"storylet": "debug_storylet"
+	  }
+	}
+  }
 }
 
 var ActivityUINodes = {}
@@ -388,6 +405,10 @@ func process_activity(activity: String, delta: float):
 			set_progress(activity, 0)
 			stop_activity(activity)
 			lock_activity(activity)
+		elif(ActivityData.get(activity).get("does_not_restart", false)):
+			progress = 0
+			set_progress(activity, 0)
+			end_activity(activity)
 		else:
 			progress -= goal
 			restart_activity(activity, progress)
@@ -532,6 +553,16 @@ func stop_activity(activity: String):
 	if(ActivityData.get(activity).has("LOC_stop_message")):
 		var text = ActivityData.get(activity).get("LOC_stop_message")
 		GameLog.add_message(text)
+	pass
+
+func end_activity(activity: String):
+	CurrentActivities.erase(activity)
+	
+	var activity_UI: Activity_UI = get_activity_ui(activity)
+	if activity_UI:
+		activity_UI.deactivate()
+	
+	activity_ended.emit(activity)
 	pass
 
 func lock_activity(activity: String):
