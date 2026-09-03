@@ -87,6 +87,14 @@ func construct_tooltip_stats() -> String:
 		line = "[color=Orange]" + "Activity is not unlocked yet!" + "[/color]"
 		lines.append(line)
 	
+	if(Activities.is_paused(my_activity)):
+		if(Activities.GlobalPause):
+			line = "[color=Orange]" + Activities.GlobalPauseReason + "[/color]"
+			lines.append(line)
+		else:
+			line = "[color=Orange]" + Activities.get_pause_reason(my_activity) + "[/color]"
+			lines.append(line)
+	
 	if(Activities.ShowProgressAsPercentage): 
 		line = "Progress: %5.2f%%" % (prog / goal * 100)
 	else: 
@@ -242,20 +250,24 @@ func set_button_text(text: String, silent: bool = false):
 func activate():
 	button.set_pressed_no_signal(true)
 	
-	var stylebox = StyleBoxFlat.new()
-	stylebox.bg_color = Color(0.0, 0.5, 1.0, 1.0)
-	progress_bar.add_theme_stylebox_override("fill", stylebox)
-	
+	update_style()
 	update_tooltip(true)
 	pass
 
 func deactivate():
 	button.set_pressed_no_signal(false)
 	
-	var stylebox = StyleBoxFlat.new()
-	stylebox.bg_color = Color(0.5, 0.5, 0.5, 1.0)
-	progress_bar.add_theme_stylebox_override("fill", stylebox)
-	
+	update_style()
+	update_tooltip(true)
+	pass
+
+func pause():
+	update_style()
+	update_tooltip(true)
+	pass
+
+func unpause():
+	update_style()
 	update_tooltip(true)
 	pass
 
@@ -263,10 +275,7 @@ func lock():
 	button.set_pressed_no_signal(false)
 	button.disabled = true
 	
-	var stylebox = StyleBoxFlat.new()
-	stylebox.bg_color = Color(0.35, 0.35, 0.35, 1.0)
-	##progress_bar.add_theme_stylebox_override("fill", stylebox)
-	
+	update_style()
 	update_tooltip(true)
 	pass
 
@@ -274,9 +283,52 @@ func unlock():
 	button.set_pressed_no_signal(false)
 	button.disabled = false
 	
+	update_style()
+	update_tooltip(true)
+	pass
+
+func update_style():
+	progress_bar.remove_theme_stylebox_override("fill")
+	
+	if(Activities.is_locked(my_activity)):
+		set_style_locked()
+	else:
+		if(Activities.is_active(my_activity)):
+			if(Activities.is_paused(my_activity)):
+				set_style_active_paused()
+			else:
+				set_style_active()
+		else:
+			if(Activities.is_paused(my_activity)):
+				set_style_inactive_paused()
+			else:
+				set_style_inactive()
+	pass
+
+func set_style_active():
+	var stylebox = StyleBoxFlat.new()
+	stylebox.bg_color = Color(0.0, 0.5, 1.0, 1.0)
+	progress_bar.add_theme_stylebox_override("fill", stylebox)
+	pass
+
+func set_style_active_paused():
+	var stylebox = StyleBoxFlat.new()
+	stylebox.bg_color = Color(0.0, 0.3, 0.6, 1.0)
+	progress_bar.add_theme_stylebox_override("fill", stylebox)
+	pass
+
+func set_style_inactive():
 	var stylebox = StyleBoxFlat.new()
 	stylebox.bg_color = Color(0.5, 0.5, 0.5, 1.0)
 	progress_bar.add_theme_stylebox_override("fill", stylebox)
-	
-	update_tooltip(true)
 	pass
+
+func set_style_inactive_paused():
+	var stylebox = StyleBoxFlat.new()
+	stylebox.bg_color = Color(0.35, 0.35, 0.35, 1.0)
+	progress_bar.add_theme_stylebox_override("fill", stylebox)
+
+func set_style_locked():
+	var stylebox = StyleBoxFlat.new()
+	stylebox.bg_color = Color(0.25, 0.15, 0.15, 1.0)
+	progress_bar.add_theme_stylebox_override("fill", stylebox)

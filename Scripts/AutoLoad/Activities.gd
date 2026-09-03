@@ -18,6 +18,9 @@ signal activity_restarted(activity: String)
 signal activity_locked(activity: String)
 signal activity_unlocked(activity: String)
 
+signal activity_paused(activity: String)
+signal activity_unpaused(activity: String)
+
 const MAX = float(1e10)
 
 var ActivityData = {
@@ -243,6 +246,8 @@ var MaximumActivities = 1
 var ShowProgressAsPercentage = true
 var ShowTimeDetails = false
 var TooltipUpdateDelay = 4
+var GlobalPause = false
+var GlobalPauseReason = ""
 
 func _ready() -> void:
 	pass
@@ -366,7 +371,8 @@ func _on_activity_toggled(activity: String):
 
 func _process(delta: float) -> void:
 	for activity in CurrentActivities:
-		process_activity(activity, delta)
+		if(not is_paused(activity)):
+			process_activity(activity, delta)
 	pass
 
 func process_activity(activity: String, delta: float):
@@ -466,13 +472,13 @@ func start_activity(activity: String):
 			report_missing_costs(activity)
 	
 	if(paid):
-		var activity_UI: Activity_UI = get_activity_ui(activity)
-		if activity_UI:
-			activity_UI.activate()
-		
 		CurrentActivities.append(activity)
 		if(CurrentActivities.size() > MaximumActivities):
 			stop_activity(CurrentActivities.front())
+		
+		var activity_UI: Activity_UI = get_activity_ui(activity)
+		if activity_UI:
+			activity_UI.activate()
 		
 		activity_started.emit(activity)
 		
@@ -498,11 +504,11 @@ func restart_activity(activity: String, progress: float):
 			var text = ActivityData.get(activity).get("LOC_restart_message")
 			GameLog.add_message(text)
 	else:
+		CurrentActivities.erase(activity)
+		
 		var activity_UI: Activity_UI = get_activity_ui(activity)
 		if activity_UI:
 			activity_UI.deactivate()
-		
-		CurrentActivities.erase(activity)
 		
 		activity_stopped.emit(activity, progress)
 		## Use separate log statement to avoid weird grammar
@@ -515,11 +521,11 @@ func restart_activity(activity: String, progress: float):
 	pass
 
 func stop_activity(activity: String):
+	CurrentActivities.erase(activity)
+	
 	var activity_UI: Activity_UI = get_activity_ui(activity)
 	if activity_UI:
 		activity_UI.deactivate()
-	
-	CurrentActivities.erase(activity)
 	
 	activity_stopped.emit(activity)
 	
@@ -530,12 +536,12 @@ func stop_activity(activity: String):
 
 func lock_activity(activity: String):
 	set_locked(activity, true)
+	if(CurrentActivities.has(activity)):
+		CurrentActivities.erase(activity)
+	
 	var activity_UI: Activity_UI = get_activity_ui(activity)
 	if activity_UI:
 		activity_UI.lock()
-	
-	if(CurrentActivities.has(activity)):
-		CurrentActivities.erase(activity)
 	
 	activity_locked.emit(activity)
 	
@@ -546,6 +552,7 @@ func lock_activity(activity: String):
 
 func unlock_activity(activity: String):
 	set_locked(activity, false)
+	
 	var activity_UI: Activity_UI = get_activity_ui(activity)
 	if activity_UI:
 		activity_UI.unlock()
@@ -607,3 +614,106 @@ func process_effects(activity: String):
 		
 		Effects.process_effect_list(effect_data)
 	pass
+
+####################
+#region PAUSE SYSTEM
+func is_paused(activity: String, ignore_global_pause: bool = false) -> bool:
+	if(GlobalPause && not ignore_global_pause):
+		return true
+	if(ActivityData.get(activity).has("paused")):
+		return ActivityData.get(activity).get("paused")
+	else:
+		return false
+
+func set_paused(activity: String, paused: bool):
+	ActivityData.get(activity).set("paused", paused)
+	pass
+
+func get_pause_reason(activity: String) -> String:
+	if(ActivityData.get(activity).has("LOC_pause_reasons")):
+		var reasons: Array = ActivityData.get(activity).get("LOC_pause_reasons")
+		if(reasons.size()):
+			return reasons.get(0)
+		else:
+			return ""
+	else:
+		return ""
+
+func add_pause_reason(activity: String, reason: String):
+	if(ActivityData.get(activity).has("LOC_pause_reasons")):
+		var reasons = ActivityData.get(activity).get("LOC_pause_reasons")
+		reasons.append(reason)
+		ActivityData.get(activity).set("LOC_pause_reasons", reasons)
+	else:
+		ActivityData.get(activity).set("LOC_pause_reasons", [reason])
+
+func remove_pause_reason(activity: String, reason: String):
+	if(ActivityData.get(activity).has("LOC_pause_reasons")):
+		var reasons: Array = ActivityData.get(activity).get("LOC_pause_reasons")
+		reasons.erase(reason)
+		ActivityData.get(activity).set("LOC_pause_reasons", reasons)
+	pass
+
+func pause_activity(activity: String, reason: String = "This activity is currently unavailable!"):
+	if(not is_valid(activity)):
+		pass
+	
+	if(not is_paused(activity, true)):
+		var activity_UI: Activity_UI = get_activity_ui(activity)
+		if activity_UI:
+			activity_UI.pause()
+		
+		set_paused(activity, true)
+		activity_paused.emit(activity)
+	
+	## Add the pause reason even if the activity is already paused
+	add_pause_reason(activity, reason)
+	pass
+
+func unpause_activity(activity: String, reason: String = "This activity is currently unavailable!"):
+	if(not is_valid(activity)):
+		pass
+	
+	if(is_paused(activity, true)):
+		var activity_UI: Activity_UI = get_activity_ui(activity)
+		if activity_UI:
+			activity_UI.unpause()
+		
+		set_paused(activity, false)
+		activity_unpaused.emit(activity)
+	
+	## Remove the pause reason even if the activity is already unpaused
+	remove_pause_reason(activity, reason)
+	pass
+
+func global_pause(reason: String = "This activity is currently unavailable!"):
+	GlobalPause = true
+	GlobalPauseReason = reason
+	
+	for activity in ActivityData:
+		## Only continue if the activity wasnt already paused
+		## Ignoring global pause because we just reset it
+		if(not is_paused(activity, true)):
+			var activity_UI: Activity_UI = get_activity_ui(activity)
+			if activity_UI:
+				activity_UI.pause()
+			
+			## So we dont emit inaccurate signals
+			activity_paused.emit(activity)
+	pass
+
+func global_unpause(reason: String = ""):
+	GlobalPause = false
+	GlobalPauseReason = reason
+	
+	for activity in ActivityData:
+		## Only continue for activities that were only paused by the global pause
+		if(not is_paused(activity, true)):
+			var activity_UI: Activity_UI = get_activity_ui(activity)
+			if activity_UI:
+				activity_UI.unpause()
+			
+			activity_unpaused.emit(activity)
+	pass
+#endregion
+####################

@@ -23,20 +23,46 @@ func setup(new_activity: String, tracker: Node):
 func update():
 	rich_text_label.text = Activities.get_loc(my_activity, "title")
 	
+	update_progress_bar()
+	update_state_label()
+	update_play_button()
+	pass
+
+func update_progress_bar():
 	var progress = Activities.get_progress(my_activity)
 	var goal = Activities.get_goal(my_activity)
 	
-	if(Activities.is_active(my_activity)):
+	if(Activities.is_active(my_activity) && 
+		not Activities.is_paused(my_activity)):
 		progress_bar.visible = true
 		progress_bar.value = progress
 		progress_bar.max_value = goal
-		state_label.visible = false
-		play_button.text = "||"
 	else:
 		progress_bar.visible = false
+	pass
+
+func update_state_label():
+	if(Activities.is_paused(my_activity)):
 		state_label.visible = true
-		state_label.text = "INACTIVE"
-		play_button.text = ">"
+		state_label.text = "PAUSED"
+	else:
+		if(Activities.is_active(my_activity)):
+			state_label.visible = false
+		else:
+			state_label.visible = true
+			state_label.text = "INACTIVE"
+	pass
+
+func update_play_button():
+	if(Activities.is_paused(my_activity)):
+		play_button.visible = false
+	else:
+		if(Activities.is_active(my_activity)):
+			play_button.visible = true
+			play_button.text = "||"
+		else:
+			play_button.visible = true
+			play_button.text = ">"
 	pass
 
 func lock():
@@ -44,12 +70,12 @@ func lock():
 	
 	state_label.visible = true
 	state_label.text = "LOCKED"
+	
 	play_button.visible = false
 	pass
 
 func _on_mouse_entered() -> void:
 	pin_button.visible = true
-	
 	pass
 
 func _on_mouse_exited() -> void:

@@ -33,6 +33,9 @@ func _ready() -> void:
 	Activities.activity_locked.connect(_on_activity_locked)
 	Activities.activity_unlocked.connect(_on_activity_unlocked)
 	
+	Activities.activity_paused.connect(_on_activity_updated_global)
+	Activities.activity_unpaused.connect(_on_activity_updated_global)
+	
 	Qualities.quality_added.connect(_on_quality_updated)
 	Qualities.quality_changed.connect(_on_quality_updated)
 	Qualities.quality_removed.connect(_on_quality_removed)
@@ -59,6 +62,11 @@ func _on_activity_updated(activity: String, _progress: int):
 		activity_entries.set(activity, entry)
 		entry.setup(activity, self)
 		entry.visible = activity_toggle.button_pressed
+	pass
+
+func _on_activity_updated_global(activity: String):
+	if(activity_entries.has(activity)):
+		_on_activity_updated(activity, 0)
 	pass
 
 func _on_activity_stopped(activity: String, _last_completion: bool = false):
