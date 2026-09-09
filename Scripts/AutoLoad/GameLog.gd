@@ -64,8 +64,16 @@ func log_resource_too_low(resource_name: String, amount: int = 0, goal: int = 0)
 	add_message(text)
 	pass
 
-func log_resource_missing(resource_or_quality_name: String, amount: int = 0):
-	var text = "You need %s x '%s'" % [amount, resource_or_quality_name]
+func log_resource_too_high(resource_name: String, amount: int = 0, goal: int = 0):
+	var text = "You need less '%s'" % [resource_name]
+	if(amount > 0 && goal < Resources.MAX):
+		text += " (current: %s, maximum: %s)" % [amount, goal]
+	
+	add_message(text)
+	pass
+
+func log_resource_missing(resource_name: String, goal: int = 0):
+	var text = "You need %s x '%s'" % [goal, resource_name]
 	
 	add_message(text)
 	pass
@@ -94,6 +102,20 @@ func log_quality_remove(quality_name: String):
 
 func log_quality_missing(resource_or_quality_name: String):
 	var text = "You need '%s'" % [resource_or_quality_name]
+	
+	add_message(text)
+	pass
+
+func log_quality_specific_missing(quality_name: String, value: int):
+	var text = "You need the quality '%s - %s'" % [quality_name, value]
+	
+	add_message(text)
+	pass
+	
+func log_quality_range_missing(quality_name: String, value: int, value_max: int):
+	var text = "You need the quality '%s' with a value between %s & %s" % [
+		quality_name, value, value_max
+	]
 	
 	add_message(text)
 	pass

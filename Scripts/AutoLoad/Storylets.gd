@@ -1,4 +1,5 @@
 extends Node
+## Autoload/Singleton
 
 var StoryletData = {
   "debug_storylet": {
@@ -8,13 +9,13 @@ var StoryletData = {
 	  "debug_choice_1": {
 		"LOC_title": "Use A Gun",
 		"LOC_initial_text": "I've yet to meet one that can outsmart bullet.",
-		"LOC_result_text": "You shoot once, and you miss. You shoot again, and you miss again. Shucks.",
+		"LOC_result_text": "Admirable shot.",
 		"effects": {}
 	  },
 	  "debug_choice_2": {
 		"LOC_title": "Use More Gun",
 		"LOC_initial_text": "I've yet to meet one that can outsmart... bullets? Eh, close enough.",
-		"LOC_result_text": "Where did you get all these guns?",
+		"LOC_result_text": "Where exactly did you get all these guns?",
 		"effects": {}
 	  },
 	  "debug_choice_3": {

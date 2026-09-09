@@ -1,31 +1,33 @@
 extends Node
+## Autoload/Singleton
 
 var EffectData: Dictionary = {
 	"add_resource": {
 		"context": "Resources",
 		"method": "change_resource",
-		"arguments": [ "resource", "amount" ],
-		"LOC_desc": "Gain {amount} x {resource}",
-		"LOC_alt_descriptions": {
-			"negative": "Lose {amount} x {resource}"
-		}
+		"target_arg": "resource",
+		"value_arg": "amount",
+		"LOC_desc": "Gain {amount} x {resource}"
 	},
 	"subtract_resource": {
 		"context": "Resources",
 		"method": "reduce_resource",
-		"arguments": [ "resource", "amount" ],
-		"LOC_desc": "Lose {amount} x {resource}",
+		"target_arg": "resource",
+		"value_arg": "amount",
+		"LOC_desc": "Lose {amount} x {resource}"
 	},
 	"set_quality": {
 		"context": "Qualities",
 		"method": "override_quality",
-		"arguments": [ "quality", "value" ],
+		"target_arg": "quality",
+		"value_arg": "value",
 		"LOC_desc": "Set '{quality}' to {value}"
 	},
 	"remove_quality": {
 		"context": "Qualities",
 		"method": "override_quality",
-		"arguments": [ "quality", "value" ],
+		"target_arg": "quality",
+		"value_arg": "value",
 		"LOC_desc": "Remove '{quality}'",
 		"default_arguments": {
 			"value": 0
@@ -34,19 +36,19 @@ var EffectData: Dictionary = {
 	"unlock_activity": {
 		"context": "Activities",
 		"method": "unlock_activity",
-		"arguments": [ "activity" ],
+		"target_arg": "activity",
 		"LOC_desc": "Unlock '{activity}'"
 	},
 	"lock_activity": {
 		"context": "Activities",
 		"method": "lock_activity",
-		"arguments": [ "activity" ],
+		"target_arg": "activity",
 		"LOC_desc": "Lock '{activity}'"
 	},
 	"start_storylet": {
 		"context": "Storylets",
 		"method": "start_storylet",
-		"arguments": [ "storylet" ],
+		"target_arg": "storylet",
 		"LOC_desc": "Begin '{storylet}'"
 	}
 }
@@ -80,45 +82,52 @@ func process_effect_list(input: Dictionary) -> bool:
 	
 	for effect in input:
 		var effect_data = input.get(effect)
-		var valid = process_effect(effect_data)
+		
+		if(typeof(effect_data) != TYPE_DICTIONARY):
+			effect_data = { "value": effect_data }
+		
+		var valid = process_effect(effect, effect_data)
 		if(not valid):
 			all_clear = false
 		
 	return all_clear
 
-func process_effect(input: Dictionary) -> bool:
-	# GET AND VALIDATE EFFECT
-	if(input.has("effect") == false):
+func process_effect(header: String, input: Dictionary) -> bool:
+	var effect_ID = header.get_slice(".", 0)
+	var target_ID = header.get_slice(".", 1)
+	#var hidden = true if header.get_slice(".", 2) == "HIDDEN" else false
+	
+	# VALIDATE AND GET EFFECT
+	if(not is_valid(effect_ID)):
 		return false
-	if(not is_valid(input.get("effect"))):
-		return false
-	var effect = EffectData.get(input.get("effect"))
+	var effect = EffectData.get(effect_ID)
 	
 	# GET AND VALIDATE CONTEXT
-	if(not effect.has("context")): 
-		return false
-	var singleton: Object = get_context(effect.get("context"))
+	var singleton: Object = get_context(effect.get("context", ""))
 	if(singleton == null):
 		return false
 	
 	# GET AND VALIDATE METHOD
-	if(not effect.has("method")): 
-		return false
-	var method = effect.get("method")
+	var method = effect.get("method", "")
 	if(not singleton.has_method(method)):
 		return false
 	
-	var arguments = []
-	var default_arguments = []
-	if(effect.has("arguments")):
-		arguments = effect.get("arguments")
-	if(effect.has("default_arguments")):
-		default_arguments = effect.get("default_arguments")
-	var target_arguments = get_target_arguments(singleton, method)
-	var final_arguments = []
+	var target_arg = effect.get("target_arg", "")
+	var value_arg = effect.get("value_arg", "")
+	
+	var arguments: Array = effect.get("arguments", [])
+	var default_arguments: Dictionary = effect.get("default_arguments", {})
+	var target_arguments: Array = get_target_arguments(singleton, method)
+	var final_arguments: Array = []
 	
 	for arg in target_arguments:
 		var arg_name = arg.get("name")
+		
+		if arg_name == target_arg:
+			final_arguments.append(target_ID)
+		
+		if arg_name == value_arg:
+			final_arguments.append(input.get("value", 0))
 		
 		if(arguments.has(arg_name)):
 			if(input.has(arg_name)):
@@ -146,42 +155,55 @@ func process_effect_descriptions(input: Dictionary) -> Array[String]:
 	
 	for effect in input:
 		var effect_data = input.get(effect)
-		var line = process_effect_desc(effect_data)
+		
+		if(typeof(effect_data) != TYPE_DICTIONARY):
+			effect_data = { "value": effect_data }
+		
+		var line = process_effect_desc(effect, effect_data)
 		if(line != "" && not effect_data.get("hide_from_tooltip")):
 			lines.append(line)
 	
 	return lines
 
-func process_effect_desc(input: Dictionary) -> String:
-	# GET AND VALIDATE EFFECT
-	if(input.has("effect") == false):
-		return ""
-	if(not is_valid(input.get("effect"))):
-		return ""
-	var effect = EffectData.get(input.get("effect"))
+func process_effect_desc(header: String, input: Dictionary) -> String:
+	var effect_ID = header.get_slice(".", 0)
+	var target_ID = header.get_slice(".", 1)
 	
-	var arguments: Array = []
-	if(effect.has("arguments")):
-		arguments = effect.get("arguments")
+	if header.get_slice(".", 2) == "HIDDEN":
+		return ""
+	
+	# VALIDATE AND GET EFFECT
+	if(not is_valid(effect_ID)):
+		return ""
+	var effect = EffectData.get(effect_ID)
+	
+	var desc: String = effect.get("LOC_desc", "")
 	var final_arguments: Dictionary = {}
-	for arg in arguments:
-		var data = input.get(arg)
-		
-		if(data):
-			match(arg):
-				"activity":
-					data = Activities.get_loc(data, "title")
-				"resource":
-					data = Resources.get_loc(data, "title", input.get("amount") > 1)
-				"quality":
-					data = Qualities.get_loc(data, "title")
-				"storylet":
-					data = Storylets.get_loc(data, "title")
-		
-		final_arguments.set(arg, data)
 	
-	if(not effect.has("LOC_desc")):
-		return ""
-	var desc: String = effect.get("LOC_desc")
+	var target_arg = effect.get("target_arg", "")
+	match(target_arg):
+		"activity":
+			final_arguments.set("activity", Activities.get_loc(target_ID, "title"))
+		"resource":
+			final_arguments.set("resource", Resources.get_loc(target_ID, "title", input.get("value") > 1))
+		"quality":
+			final_arguments.set("quality", Qualities.get_loc(target_ID, "title"))
+		"storylet":
+			final_arguments.set("storylet", Storylets.get_loc(target_ID, "title"))
+		_:
+			final_arguments.set(target_arg, target_ID)
+	
+	var value_arg = effect.get("value_arg", "value")
+	final_arguments.set(value_arg, input.get("value", 0))
+	
+	var arguments: Array = effect.get("arguments", [])
+	var default_arguments: Dictionary = effect.get("default_arguments", {})
+	for arg in arguments:
+		if(input.has(arg)):
+			final_arguments.set(arg, input.get(arg))
+		elif(default_arguments.has(arg)):
+			final_arguments.set(arg, default_arguments.get(arg))
+		else:
+			final_arguments.set(arg, null)
 	
 	return desc.format(final_arguments)

@@ -3,7 +3,7 @@ extends CheckButton
 
 func _on_toggled(toggled_on: bool) -> void:
 	if(toggled_on):
-		Activities.global_pause()
+		Activities.pause_all_activities()
 	else:
-		Activities.global_unpause()
+		Activities.unpause_all_activities()
 	pass # Replace with function body.
