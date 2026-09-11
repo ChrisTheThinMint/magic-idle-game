@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://b22lqddxvnir3" path="res://Scripts/Main_View_Tabs.gd" id="4_kek77"]
 [ext_resource type="PackedScene" uid="uid://b4cr6qf5qfp54" path="res://UI/storylet_view.tscn" id="5_5vw27"]
 [ext_resource type="Script" uid="uid://5a6lyolbsu0" path="res://Scripts/Debug/Debug_PauseButton.gd" id="5_7mycd"]
-[ext_resource type="Script" uid="uid://b3yfjkayl0llj" path="res://GameLog_CustomEntry.gd" id="7_272bh"]
+[ext_resource type="Script" uid="uid://b3yfjkayl0llj" path="res://Scripts/GameLog_CustomEntry.gd" id="7_272bh"]
 [ext_resource type="Script" uid="uid://c1xegjvul5xfu" path="res://Scripts/Debug/Debug_StoryViewButton.gd" id="8_4c57u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5vw27"]
