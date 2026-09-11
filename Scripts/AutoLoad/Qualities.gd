@@ -15,13 +15,6 @@ var QualityData = {
 	"debug_quality_2": {
 		"LOC_title": "A Particular Persistence",
 		"LOC_desc": "Practical proof of your proficiency in processes",
-		"unlocks": {
-			"debug_7": {
-				"min": 4,
-				"max": 5,
-				"permanent": false
-			}
-		}
 	},
 	"debug_quality_3": {
 		"LOC_title": "A Line of Horrendeously Excessive And Quite Unnecessary Length",
@@ -97,18 +90,12 @@ func override_quality(quality: String, value: int):
 		else:
 			GameLog.log_quality_create(title)
 		var final_amount = set_amount(quality, value)
-		
-		process_unlocks(quality, final_amount)
 	elif(value == 0):
 		if(old_value > 0):
 			GameLog.log_quality_remove(title)
 		
 		if(is_active(quality)):
 			remove_quality(quality)
-		
-		## unlocks can still go through 
-		## i.e. We treat a value of 0 as valid even if inactive
-		process_unlocks(quality, 0)
 	elif(value < 0):
 		printerr("Trying to assign negative value to quality %s, removing instead" % quality)
 		if(old_value > 0):
@@ -116,30 +103,9 @@ func override_quality(quality: String, value: int):
 		
 		if(is_active(quality)):
 			remove_quality(quality)
-	pass
-
-func process_unlocks(quality: String, value: int):
-	if(QualityData.get(quality).has("unlocks")):
-		var unlocks = QualityData.get(quality).get("unlocks")
-		
-		for unlock in unlocks: if(Activities.is_valid(unlock)):
-			var data = unlocks.get(unlock)
-			var minimum = 0
-			var maximum = MAX
-			var permanent = false
-			
-			if(data.has("min")):
-				minimum = data.get("min")
-				
-			if(data.has("max")):
-				maximum = data.get("max")
-				
-			if(data.has("permanent")):
-				permanent = data.get("permanent")
-			
-			if(minimum <= value && value <= maximum):
-				if(Activities.is_locked(unlock)):
-					Activities.unlock_activity(unlock)
-			elif(not permanent):
-				Activities.lock_activity(unlock)
+	
+	var milestones: Dictionary = QualityData.get(quality).get("milestones", {})
+	var completed_milestones: Array = QualityData.get(quality).get("completed_milestones", [])
+	completed_milestones = Effects.process_milestone_list(milestones, completed_milestones, value)
+	QualityData.get(quality).set("completed_milestones", completed_milestones)
 	pass

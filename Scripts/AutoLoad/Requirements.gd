@@ -1,7 +1,11 @@
 extends Node
 ## Autoload/Singleton
 
-# Supports three types: checks, costs and catalysts
+# Dispatcher for requirements
+# Intentionally not built around json implementation, unlike effects
+# Since some requirements require several functions at different timings
+
+# Supports three types: checks, costs and catalysts/capacity
 
 # Checks set a condition that is evaluated without changing the target later
 # This is the only type supported for qualities: quality_check
@@ -17,6 +21,9 @@ extends Node
 
 # Catalysts deduct the target but can be restored at a later point
 # They may need caching at a future point
+
+# Capacity functions the same way as catalysts
+# but has different localization for a future equipment/space system
 
 # Called both for one-time checks and to confirm whether costs can be paid
 func process_requirements(input: Dictionary) -> bool:
@@ -46,7 +53,7 @@ func process_requirement(header: String, input: Dictionary) -> bool:
 	var target: String = header.get_slice(".", 1)
 	
 	match(type):
-		"resource_check", "resource_cost", "resource_catalyst":
+		"resource_check", "resource_cost", "resource_catalyst", "resource_capacity":
 			if(not Resources.is_valid(target)):
 				return false
 			
@@ -92,7 +99,28 @@ func report_on_requirement(header: String, input: Dictionary):
 	var target: String = header.get_slice(".", 1)
 	
 	match(type):
-		"resource_check", "resource_cost", "resource_catalyst":
+		"resource_check":
+			if(not Resources.is_valid(target)):
+				return false
+				
+			var amount = Resources.get_amount(target)
+			var value: int = input.get("value", 0)
+			var value_max: int = input.get("value_max", Resources.MAX)
+			
+			var title = Resources.get_loc(target, "title", value > 1)
+			
+			value = min(value, value_max)
+			
+			title = Resources.get_loc(target, "title", value > 1 || value_max > 1)
+			
+			if(amount < value): 
+				if(Resources.is_active(target)):
+					GameLog.log_resource_too_low(title, amount, value)
+				else:
+					GameLog.log_resource_missing(title, value)
+			elif(amount > value_max):
+				GameLog.log_resource_too_high(title, amount, value)
+		"resource_cost", "resource_catalyst", "resource_capacity":
 			if(not Resources.is_valid(target)):
 				return false
 				
@@ -101,27 +129,11 @@ func report_on_requirement(header: String, input: Dictionary):
 			
 			var title = Resources.get_loc(target, "title", value > 1)
 			
-			if(type == "resource_check"):
-				var value_max: int = input.get("value_max", Resources.MAX)
-				value = min(value, value_max)
-				
-				title = Resources.get_loc(target, "title", value > 1 || value_max > 1)
-				
-				if(amount < value): 
-					if(Resources.is_active(target)):
-						GameLog.log_resource_too_low(title, amount, value)
-					else:
-						GameLog.log_resource_missing(title, value)
-				elif(amount > value_max):
-					GameLog.log_resource_too_high(title, amount, value)
-			else:
-				# Costs/catalysts do not support min-max ranges
-				if(amount < value): 
-					if(Resources.is_active(target)):
-						GameLog.log_resource_too_low(title, amount, value)
-					else:
-						GameLog.log_resource_missing(title, value)
-			pass
+			if(amount < value): 
+				if(Resources.is_active(target)):
+					GameLog.log_resource_too_low(title, amount, value)
+				else:
+					GameLog.log_resource_missing(title, value)
 		"quality_check":
 			if(not Qualities.is_valid(target)):
 				return
@@ -156,7 +168,7 @@ func process_cost(header: String, input: Dictionary):
 	var target: String = header.get_slice(".", 1)
 	
 	match(type):
-		"resource_cost", "resource_catalyst":
+		"resource_cost", "resource_catalyst", "resource_capacity":
 			if(not Resources.is_valid(target)):
 				return false
 			
@@ -184,7 +196,7 @@ func process_catalyst(header: String, input: Dictionary):
 	var target: String = header.get_slice(".", 1)
 	
 	match(type):
-		"resource_catalyst":
+		"resource_catalyst", "resource_capacity":
 			if(not Resources.is_valid(target)):
 				return false
 			
@@ -228,13 +240,21 @@ func process_requirement_desc(header: String, input: Dictionary) -> String:
 				return "%s x '%s'" % [value, title]
 			else:
 				return "%s-%s x '%s'" % [value, value_max, title]
-		"resource_cost", "resource_catalyst":
-			var affix = " (consumed)" if type == "resource_cost" else " (Catalyst)"
-			
+		"resource_cost":
 			var value: int = input.get("value", 0)
 			var title = Resources.get_loc(target, "title", value > 1)
 			
-			return "%s x '%s'" % [value, title] + affix
+			return "%s x '%s' (consumed)" % [value, title]
+		"resource_catalyst":
+			var value: int = input.get("value", 0)
+			var title = Resources.get_loc(target, "title", value > 1)
+			
+			return "%s x '%s' (Catalyst)" % [value, title]
+		"resource_capacity":
+			var value: int = input.get("value", 0)
+			var title = Resources.get_loc(target, "title", value > 1)
+			
+			return "%s x '%s' (Capacity)" % [value, title]
 		"quality_check":
 			if(not Qualities.is_valid(target)):
 				return ""

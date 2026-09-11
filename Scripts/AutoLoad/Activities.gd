@@ -25,7 +25,7 @@ signal activity_unpaused(activity: String)
 const MAX = float(1e10)
 
 var ActivityData = {
-  "debug_1": {
+  "debug_activity_1": {
 	"category": "debug",
 	"locked": false,
 	"LOC_title": "Do Something",
@@ -41,7 +41,7 @@ var ActivityData = {
 	  "set_quality.debug_quality_2.HIDDEN": 2
 	}
   },
-  "debug_2": {
+  "debug_activity_2": {
 	"category": "debug",
 	"locked": false,
 	"LOC_title": "Do Something Else",
@@ -58,7 +58,7 @@ var ActivityData = {
 	  "remove_quality.debug_quality_2.HIDDEN": 0
 	}
   },
-  "debug_3": {
+  "debug_activity_3": {
 	"category": "debug",
 	"locked": false,
 	"LOC_title": "Do Everything",
@@ -76,7 +76,7 @@ var ActivityData = {
 	  "set_quality.debug_quality_2.HIDDEN": 2
 	}
   },
-  "debug_4": {
+  "debug_activity_4": {
 	"category": "debug",
 	"locked": false,
 	"LOC_title": "Prove Something",
@@ -94,7 +94,7 @@ var ActivityData = {
 	  "resource_cost.debug_resource": 20
 	}
   },
-  "debug_5": {
+  "debug_activity_5": {
 	"category": "debug",
 	"locked": false,
 	"LOC_title": "Unlock Something",
@@ -108,10 +108,10 @@ var ActivityData = {
 	"speed": 50,
 	"max_completions": 1,
 	"effects": {
-	  "unlock_activity.debug_6": true
+	  "unlock_activity.debug_activity_6": true
 	}
   },
-  "debug_6": {
+  "debug_activity_6": {
 	"category": "debug",
 	"locked": true,
 	"LOC_title": "Do Something Better",
@@ -126,10 +126,10 @@ var ActivityData = {
 	"effects": {
 	  "add_resource.debug_resource": 99,
 	  "set_quality.debug_quality_2.HIDDEN": 4,
-	  "lock_activity.debug_2": true
+	  "lock_activity.debug_activity_2": true
 	}
   },
-  "debug_7": {
+  "debug_activity_7": {
 	"category": "debug",
 	"locked": true,
 	"LOC_title": "Be Proud Of Something",
@@ -150,7 +150,7 @@ var ActivityData = {
 	  ]
 	}
   },
-  "debug_8": {
+  "debug_activity_8": {
 	"category": "debug",
 	"locked": true,
 	"LOC_title": "Enjoy Something",
@@ -169,7 +169,7 @@ var ActivityData = {
 	  "resource_check.debug_resource_2": 10
 	}
   },
-  "debug_9": {
+  "debug_activity_9": {
 	"category": "debug",
 	"LOC_tooltip": "Or, atleast, think that you are.",
 	"LOC_title": "Choose Something",
@@ -421,8 +421,17 @@ func complete_activity(activity: String) -> bool:
 		var text = ActivityData.get(activity).get("LOC_complete_message")
 		GameLog.add_message(text)
 	
-	var effect_data: Dictionary = ActivityData.get(activity).get("effects", {})
-	Effects.process_effect_list(effect_data)
+	var requirements: Dictionary = ActivityData.get(activity).get("requirements", {})
+	Requirements.process_catalysts(requirements)
+	
+	var effects: Dictionary = ActivityData.get(activity).get("effects", {})
+	Effects.process_effect_list(effects)
+	
+	var milestones: Dictionary = ActivityData.get(activity).get("milestones", {})
+	var completed_milestones: Array = ActivityData.get(activity).get("completed_milestones", [])
+	completed_milestones = Effects.process_milestone_list(milestones, completed_milestones, completions)
+	ActivityData.get(activity).set("completed_milestones", completed_milestones)
+	
 	set_paid(activity, false)
 	
 	activity_completed.emit(activity, last_completion)

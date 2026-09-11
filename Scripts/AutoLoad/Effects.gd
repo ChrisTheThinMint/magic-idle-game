@@ -207,3 +207,20 @@ func process_effect_desc(header: String, input: Dictionary) -> String:
 			final_arguments.set(arg, null)
 	
 	return desc.format(final_arguments)
+
+func process_milestone_list(milestones: Dictionary, completed_milestones: Array, value: int) -> Array:
+	for milestone in milestones:
+		if(not completed_milestones.has(milestone)):
+			if(value >= milestone):
+				var milestone_data = milestones.get(milestone)
+				
+				if(typeof(milestone_data) == TYPE_STRING):
+					process_effect(milestone_data, {})
+				else:
+					if(milestone_data.has("LOC_message")):
+						GameLog.add_message(milestone_data.get("LOC_message"))
+					
+					process_effect(milestone_data.get("effect", ""), milestone_data.get("arguments", {}))
+				
+				completed_milestones.append(milestone)
+	return completed_milestones

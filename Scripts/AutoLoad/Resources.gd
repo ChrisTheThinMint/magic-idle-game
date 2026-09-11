@@ -16,10 +16,12 @@ var ResourceData = {
 		"LOC_title": "Favour",
 		"LOC_desc": "A result of your results.",
 		"maximum": 50,
-		"unlocks": {
-			"debug_8": {
-				"min": 10,
-				"permanent": false
+		"milestones": {
+			10: "unlock_activity.debug_activity_8",
+			20: {
+				"effect": "add_resource.debug_resource",
+				"arguments": { "value": 100 },
+				"LOC_message": "You receive a generous donation!"
 			}
 		}
 	}
@@ -102,7 +104,11 @@ func change_resource(resource: String, amount: int):
 		GameLog.log_resource_remove(title)
 		
 		remove_resource(resource)
-		process_unlocks(resource, 0)
+		
+		var milestones: Dictionary = ResourceData.get(resource).get("milestones", {})
+		var completed_milestones: Array = ResourceData.get(resource).get("completed_milestones", [])
+		completed_milestones = Effects.process_milestone_list(milestones, completed_milestones, 0)
+		ResourceData.get(resource).set("completed_milestones", completed_milestones)
 	else:
 		var old_amount = get_amount(resource)
 		var change = add_amount(resource, amount)
@@ -120,35 +126,12 @@ func change_resource(resource: String, amount: int):
 			else:
 				GameLog.log_resource_gain_new(title, change)
 		
-		process_unlocks(resource, new_amount)
+		var milestones: Dictionary = ResourceData.get(resource).get("milestones", {})
+		var completed_milestones: Array = ResourceData.get(resource).get("completed_milestones", [])
+		completed_milestones = Effects.process_milestone_list(milestones, completed_milestones, new_amount)
+		ResourceData.get(resource).set("completed_milestones", completed_milestones)
 	pass
 
 func reduce_resource(resource: String, amount: int):
 	change_resource(resource, -amount)
-	pass
-
-func process_unlocks(resource: String, amount: int):
-	if(ResourceData.get(resource).has("unlocks")):
-		var unlocks = ResourceData.get(resource).get("unlocks")
-		
-		for unlock in unlocks: if(Activities.is_valid(unlock)):
-			var data = unlocks.get(unlock)
-			var minimum = 0
-			var maximum = MAX
-			var permanent = false
-			
-			if(data.has("min")):
-				minimum = data.get("min")
-				
-			if(data.has("max")):
-				maximum = data.get("max")
-				
-			if(data.has("permanent")):
-				permanent = data.get("permanent")
-			
-			if(minimum <= amount && amount <= maximum):
-				if(Activities.is_locked(unlock)):
-					Activities.unlock_activity(unlock)
-			elif(not permanent):
-				Activities.lock_activity(unlock)
 	pass
