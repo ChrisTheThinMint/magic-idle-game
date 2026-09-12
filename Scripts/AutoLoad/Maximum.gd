@@ -18,7 +18,7 @@ func process_supports(input: Dictionary, value: int, source: String):
 		process_support(header, data, value, source)
 	pass
 
-func process_support(header: String, input: Dictionary, value: int, source: String):
+func process_support(header: String, input: Variant, value: int, source: String):
 	var context: String = header.get_slice(".", 0)
 	var target: String = header.get_slice(".", 1)
 	var hidden: String = header.get_slice(".", 2)
