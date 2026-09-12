@@ -10,12 +10,19 @@ var ResourceData = {
 	"debug_resource": {
 		"LOC_title": "Result",
 		"LOC_title_pl": "Results",
-		"LOC_desc": "The fruit of having done something."
+		"max_amount": 500,
+		"LOC_desc": "The fruit of having done something.",
+		"supports": {
+			"resource.debug_resource_2": {
+				"required": 10,
+				"increase": 1
+			}
+		}
 	},
 	"debug_resource_2": {
 		"LOC_title": "Favour",
 		"LOC_desc": "A result of your results.",
-		"maximum": 50,
+		"max_amount": 50,
 		"milestones": {
 			10: "unlock_activity.debug_activity_8",
 			20: {
@@ -31,11 +38,12 @@ var ResourceCount = {}
 
 signal resource_added(resource: String, amount: int)
 signal resource_changed(resource: String, amount: int)
+signal resource_max_changed(resource: String, max_amount: int)
 signal resource_removed(resource: String)
 
-const MAX = int(1e10)
-
 func _ready() -> void:
+	for resource in ResourceData:
+		update_max_amount(resource)
 	pass
 
 func get_loc(resource: String, key: String, plural: bool = false) -> String:
@@ -62,15 +70,9 @@ func get_amount(resource: String) -> int:
 	else:
 		return 0
 
-func get_max(resource: String) -> int:
-	if(ResourceData.get(resource).has("maximum")):
-		return ResourceData.get(resource).get("maximum")
-	else:
-		return MAX
-
 func set_amount(resource: String, amount: int) -> int:
 	if(is_valid(resource)):
-		var new_amount = clampi(amount, 0, get_max(resource))
+		var new_amount = clampi(amount, 0, get_max_amount(resource))
 		
 		ResourceCount.set(resource, new_amount)
 		
@@ -88,6 +90,53 @@ func add_amount(resource: String, amount: int) -> int:
 	var new_amount = set_amount(resource, old_amount + amount)
 	return new_amount - old_amount
 
+#region HANDLING MAX AMOUNT
+func get_max_amount(resource: String) -> int:
+	if(ResourceData.get(resource).has("max_amount_current")):
+		return ResourceData.get(resource).get("max_amount_current")
+	else:
+		return Maximum.MAX
+
+func get_max_amount_base(resource: String) -> int:
+	if(ResourceData.get(resource).has("max_amount")):
+		return ResourceData.get(resource).get("max_amount")
+	else:
+		return Maximum.MAX
+
+## Deprecated, always add/remove modifiers instead
+func set_max_amount(resource: String, max_amount: int):
+	ResourceData.get(resource).set("max_amount", max_amount)
+	pass
+
+func set_max_amount_modifier(resource: String, key: String, value: int):
+	if(is_valid(resource)):
+		if(ResourceData.get(resource).has("max_amount_modifiers")):
+			
+			if(value == 0):
+				ResourceData.get(resource).get("max_amount_modifiers").erase(key)
+			else:
+				ResourceData.get(resource).get("max_amount_modifiers").set(key, value)
+		elif(not value == 0):
+			ResourceData.get(resource).set("max_amount_modifiers", {key: value})
+		
+		update_max_amount(resource)
+	pass
+
+func remove_max_amount_modifier(resource: String, key: String):
+	set_max_amount_modifier(resource, key, 0)
+	pass
+
+func update_max_amount(resource):
+	if(is_valid(resource)):
+		var modifiers = ResourceData.get(resource).get("max_amount_modifiers", {})
+		
+		var new_max = Maximum.calculate_maximum(get_max_amount_base(resource), modifiers)
+		ResourceData.get(resource).set("max_amount_current", new_max)
+		
+		resource_max_changed.emit(resource, new_max)
+	pass
+#endregion
+
 func remove_resource(resource: String):
 	if(is_valid(resource)):
 		if(is_active(resource)):
@@ -99,21 +148,17 @@ func remove_resource(resource: String):
 
 func change_resource(resource: String, amount: int):
 	var title = get_loc(resource, "title")
+	var old_amount = get_amount(resource)
+	var change = add_amount(resource, amount)
+	var new_amount = old_amount + change
 	
 	if(amount == 0):
+		new_amount = 0
+		
 		GameLog.log_resource_remove(title)
 		
 		remove_resource(resource)
-		
-		var milestones: Dictionary = ResourceData.get(resource).get("milestones", {})
-		var completed_milestones: Array = ResourceData.get(resource).get("completed_milestones", [])
-		completed_milestones = Effects.process_milestone_list(milestones, completed_milestones, 0)
-		ResourceData.get(resource).set("completed_milestones", completed_milestones)
 	else:
-		var old_amount = get_amount(resource)
-		var change = add_amount(resource, amount)
-		var new_amount = old_amount + change
-		
 		if(abs(change) > 1):
 			title = get_loc(resource, "title", true)
 		
@@ -125,11 +170,14 @@ func change_resource(resource: String, amount: int):
 					GameLog.log_resource_lose(title, -change, new_amount)
 			else:
 				GameLog.log_resource_gain_new(title, change)
-		
-		var milestones: Dictionary = ResourceData.get(resource).get("milestones", {})
-		var completed_milestones: Array = ResourceData.get(resource).get("completed_milestones", [])
-		completed_milestones = Effects.process_milestone_list(milestones, completed_milestones, new_amount)
-		ResourceData.get(resource).set("completed_milestones", completed_milestones)
+	
+	var milestones: Dictionary = ResourceData.get(resource).get("milestones", {})
+	var completed_milestones: Array = ResourceData.get(resource).get("completed_milestones", [])
+	completed_milestones = Effects.process_milestone_list(milestones, completed_milestones, new_amount)
+	ResourceData.get(resource).set("completed_milestones", completed_milestones)
+	
+	var supports: Dictionary = ResourceData.get(resource).get("supports", {})
+	Maximum.process_supports(supports, new_amount, resource)
 	pass
 
 func reduce_resource(resource: String, amount: int):

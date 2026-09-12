@@ -29,6 +29,7 @@ var resource_entries = {}
 func _ready() -> void:
 	Activities.activity_started.connect(_on_activity_updated.bind(0))
 	Activities.activity_progressed.connect(_on_activity_updated)
+	Activities.activity_max_changed.connect(_on_activity_updated)
 	Activities.activity_stopped.connect(_on_activity_stopped)
 	Activities.activity_locked.connect(_on_activity_locked)
 	Activities.activity_unlocked.connect(_on_activity_unlocked)
@@ -43,12 +44,13 @@ func _ready() -> void:
 	
 	Resources.resource_added.connect(_on_resource_updated)
 	Resources.resource_changed.connect(_on_resource_updated)
+	Resources.resource_max_changed.connect(_on_resource_updated)
 	Resources.resource_removed.connect(_on_resource_removed)
 	pass
 
 ################################
 #region ACTIVITY ENTRY FUNCTIONS
-func _on_activity_updated(activity: String, _progress: int):
+func _on_activity_updated(activity: String, _dummy: int):
 	if(activity_entries.has(activity)):
 		var entry: Activity_Entry = activity_entries.get(activity)
 		
@@ -70,7 +72,7 @@ func _on_activity_updated_global(activity: String):
 		_on_activity_updated(activity, 0)
 	pass
 
-func _on_activity_stopped(activity: String, _last_completion: bool = false):
+func _on_activity_stopped(activity: String, _dummy: bool = false):
 	if(activity_entries.has(activity)):
 		var entry: Activity_Entry = activity_entries.get(activity)
 		
@@ -123,7 +125,7 @@ func _on_activity_toggle_toggled(toggled_on: bool) -> void:
 
 ###############################
 #region QUALITY ENTRY FUNCTIONS
-func _on_quality_updated(quality: String, _value: int):
+func _on_quality_updated(quality: String, _dummy: int):
 	if(quality_entries.has(quality)):
 		var entry: Quality_Entry = quality_entries.get(quality)
 		
@@ -178,7 +180,7 @@ func _on_quality_toggle_toggled(toggled_on: bool) -> void:
 
 ################################
 #region RESOURCE ENTRY FUNCTIONS
-func _on_resource_updated(resource: String, _amount: int):
+func _on_resource_updated(resource: String, _dummy: int):
 	if(resource_entries.has(resource)):
 		var entry: Resource_Entry = resource_entries.get(resource)
 		

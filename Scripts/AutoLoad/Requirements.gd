@@ -61,7 +61,7 @@ func process_requirement(header: String, input: Dictionary) -> bool:
 			var value: int = input.get("value", 0)
 			
 			if(type == "resource_check"):
-				var value_max: int = input.get("value_max", Resources.MAX)
+				var value_max: int = input.get("value_max", Maximum.MAX)
 				value = min(value, value_max)
 				
 				if(amount < value || amount > value_max):
@@ -105,7 +105,7 @@ func report_on_requirement(header: String, input: Dictionary):
 				
 			var amount = Resources.get_amount(target)
 			var value: int = input.get("value", 0)
-			var value_max: int = input.get("value_max", Resources.MAX)
+			var value_max: int = input.get("value_max", Maximum.MAX)
 			
 			var title = Resources.get_loc(target, "title", value > 1)
 			

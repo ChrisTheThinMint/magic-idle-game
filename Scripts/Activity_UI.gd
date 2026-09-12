@@ -57,26 +57,6 @@ func set_progress(progress: float, silent: bool = false):
 	
 	if(not silent):
 		update_tooltip()
-	#if(Activities.ShowProgressAsPercentage):
-		#var goal = Activities.get_goal(my_activity)
-		#var perc = progress / goal * 100
-		#var text = "Progress: %5.2f%%" % perc
-		#
-		#button.tooltip_strings[0] = text
-	#else:
-		#var goal = Activities.get_goal(my_activity)
-		#var text = "Progress: %0.1f/%0.1f" % [progress, goal]
-		#
-		#button.tooltip_strings[0] = text
-	#
-	#if(button.active_tooltip != null):
-		#if(update_delay >= Activities.TooltipUpdateDelay):
-			#update_delay = 0
-			#button.active_tooltip.set_content(button.tooltip_strings)
-		#else:
-			#update_delay += 1
-	#else:
-		#update_delay = 0
 	pass
 
 func set_goal(goal: float, silent: bool = false):

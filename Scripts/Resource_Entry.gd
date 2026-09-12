@@ -21,9 +21,9 @@ func update():
 	rich_text_label.text = Resources.get_loc(my_resource, "title", true)
 	
 	var amount = Resources.get_amount(my_resource)
-	var max_amount = Resources.get_max(my_resource)
+	var max_amount = Resources.get_max_amount(my_resource)
 	
-	if(max_amount != Resources.MAX):
+	if(max_amount != Maximum.MAX):
 		rich_text_label_2.text = "%s/%s" % [amount, max_amount]
 	else:
 		rich_text_label_2.text = "%s" % amount

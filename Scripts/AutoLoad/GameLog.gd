@@ -66,7 +66,7 @@ func log_resource_too_low(resource_name: String, amount: int = 0, goal: int = 0)
 
 func log_resource_too_high(resource_name: String, amount: int = 0, goal: int = 0):
 	var text = "You need less '%s'" % [resource_name]
-	if(amount > 0 && goal < Resources.MAX):
+	if(amount > 0 && goal < Maximum.MAX):
 		text += " (current: %s, maximum: %s)" % [amount, goal]
 	
 	add_message(text)

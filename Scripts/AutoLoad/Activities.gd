@@ -18,11 +18,10 @@ signal activity_completed(activity: String, last_completion: bool)
 signal activity_restarted(activity: String)
 signal activity_locked(activity: String)
 signal activity_unlocked(activity: String)
+signal activity_max_changed(activity: String, max_completions: int)
 
 signal activity_paused(activity: String)
 signal activity_unpaused(activity: String)
-
-const MAX = float(1e10)
 
 var ActivityData = {
   "debug_activity_1": {
@@ -197,6 +196,8 @@ var GlobalPause = false
 var GlobalPauseReason = ""
 
 func _ready() -> void:
+	for activity in ActivityData:
+		update_max_completions(activity)
 	pass
 
 func _process(delta: float) -> void:
@@ -266,15 +267,54 @@ func set_completions(activity: String, completions: int):
 	pass
 #endregion
 
-#region MAX COMPLETIONS GET/SET
+#region MAX COMPLETIONS HANDLING
 func get_max_completions(activity: String) -> int:
+	if(ActivityData.get(activity).has("max_completions_current")):
+		return ActivityData.get(activity).get("max_completions_current")
+	else:
+		return Maximum.MAX
+
+func get_max_completions_base(activity: String) -> int:
 	if(ActivityData.get(activity).has("max_completions")):
 		return ActivityData.get(activity).get("max_completions")
 	else:
-		return int(MAX)
+		return Maximum.MAX
 
+## Deprecated, always add/remove modifiers instead
 func set_max_completions(activity: String, max_completions: int):
 	ActivityData.get(activity).set("max_completions", max_completions)
+	pass
+
+func set_max_completions_modifier(activity: String, key: String, value: int):
+	if(is_valid(activity)):
+		if(ActivityData.get(activity).has("max_completions_modifiers")):
+			
+			if(value == 0):
+				ActivityData.get(activity).get("max_completions_modifiers").erase(key)
+			else:
+				ActivityData.get(activity).get("max_completions_modifiers").set(key, value)
+		elif(not value == 0):
+			ActivityData.get(activity).set("max_completions_modifiers", {key: value})
+		
+		update_max_completions(activity)
+	pass
+
+func remove_max_completions_modifier(activity: String, key: String):
+	set_max_completions_modifier(activity, key, 0)
+	pass
+
+func update_max_completions(activity):
+	if(is_valid(activity)):
+		var modifiers = ActivityData.get(activity).get("max_completions_modifiers", {})
+		
+		var new_max = Maximum.calculate_maximum(get_max_completions_base(activity), modifiers)
+		ActivityData.get(activity).set("max_completions_current", new_max)
+		
+		var activity_UI: Activity_UI = get_activity_ui(activity)
+		if activity_UI:
+			activity_UI.update_tooltip(true)
+		
+		activity_max_changed.emit(activity, new_max)
 	pass
 #endregion
 
@@ -431,6 +471,9 @@ func complete_activity(activity: String) -> bool:
 	var completed_milestones: Array = ActivityData.get(activity).get("completed_milestones", [])
 	completed_milestones = Effects.process_milestone_list(milestones, completed_milestones, completions)
 	ActivityData.get(activity).set("completed_milestones", completed_milestones)
+	
+	var supports: Dictionary = ActivityData.get(activity).get("supports", {})
+	Maximum.process_supports(supports, completions, activity)
 	
 	set_paid(activity, false)
 	
@@ -671,7 +714,7 @@ func construct_tooltip_stats(activity: String) -> String:
 		line = "Progress: %.2f/%.2f" % [prog, goal]
 	lines.append(line)
 	
-	time= floor(((goal - prog) / speed))
+	time = floor(((goal - prog) / speed))
 	h = time / 3600
 	m = (time % 3600) / 60
 	s = ((time % 3600) % 60)
@@ -684,7 +727,7 @@ func construct_tooltip_stats(activity: String) -> String:
 		line = "Time Left: %.0fs" % s
 	lines.append(line)
 	
-	if(max_comp && max_comp < MAX):
+	if(max_comp && max_comp < Maximum.MAX):
 		line = "Completions: %s/%s" % [comp, max_comp]
 	else: 
 		line = "Completions: %s" % comp
@@ -697,7 +740,7 @@ func construct_tooltip_stats(activity: String) -> String:
 			line = "Speed: %.2f/s" % speed
 		lines.append(line)
 		
-		time = int(floor((goal / speed)))
+		time = floor(((goal - prog) / speed))
 		h = time / 3600
 		m = (time % 3600) / 60
 		s = ((time % 3600) % 60)

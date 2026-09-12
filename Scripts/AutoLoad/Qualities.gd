@@ -15,6 +15,16 @@ var QualityData = {
 	"debug_quality_2": {
 		"LOC_title": "A Particular Persistence",
 		"LOC_desc": "Practical proof of your proficiency in processes",
+		"unlocks": {
+			"debug_activity_7": {
+				"min": 4,
+				"max": 5,
+				"permanent": false
+			}
+		},
+		"thresholds": [
+			
+		]
 	},
 	"debug_quality_3": {
 		"LOC_title": "A Line of Horrendeously Excessive And Quite Unnecessary Length",
@@ -27,8 +37,6 @@ var QualityCount = {}
 signal quality_added(quality: String, value: int)
 signal quality_changed(quality: String, value: int)
 signal quality_removed(quality: String)
-
-const MAX = int(1e10)
 
 func _ready() -> void:
 	pass
@@ -53,7 +61,7 @@ func get_amount(quality: String) -> int:
 
 func set_amount(quality: String, amount: int) -> int:
 	if(is_valid(quality)):
-		var final_amount = clampi(amount, 0, MAX)
+		var final_amount = clampi(amount, 0, Maximum.MAX)
 		
 		QualityCount.set(quality, final_amount)
 		
@@ -79,25 +87,23 @@ func remove_quality(quality: String):
 		push_error("Trying to remove an invalid quality with quality %s" % quality)
 	pass
 
-# Qualities are always set to a new value, see above
+# Qualities are always set to a new value, see the header
 func override_quality(quality: String, value: int):
 	var title = get_loc(quality, "title")
 	var old_value = get_amount(quality)
 	
-	if(value > 0 && old_value != value):
-		if(is_active(quality) && old_value != value):
-			GameLog.log_quality_override(title, value)
-		else:
+	if(value > 0):
+		if(not is_active(quality)):
 			GameLog.log_quality_create(title)
-		var final_amount = set_amount(quality, value)
-	elif(value == 0):
-		if(old_value > 0):
-			GameLog.log_quality_remove(title)
+			value = set_amount(quality, value)
+		elif(old_value != value):
+			GameLog.log_quality_override(title, value)
+			value = set_amount(quality, value)
+	else:
+		if(value < 0):
+			value = 0
+			printerr("Trying to assign negative value to quality %s, removing instead" % quality)
 		
-		if(is_active(quality)):
-			remove_quality(quality)
-	elif(value < 0):
-		printerr("Trying to assign negative value to quality %s, removing instead" % quality)
 		if(old_value > 0):
 			GameLog.log_quality_remove(title)
 		
@@ -108,4 +114,7 @@ func override_quality(quality: String, value: int):
 	var completed_milestones: Array = QualityData.get(quality).get("completed_milestones", [])
 	completed_milestones = Effects.process_milestone_list(milestones, completed_milestones, value)
 	QualityData.get(quality).set("completed_milestones", completed_milestones)
+	
+	var supports: Dictionary = QualityData.get(quality).get("supports", {})
+	Maximum.process_supports(supports, value, quality)
 	pass
