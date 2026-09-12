@@ -1,4 +1,15 @@
 extends Node
+## Autoload/Singleton
+
+## Implements MAX constant as a single source of truth
+## As well as the support system used for maximum increases
+## Activities, resources and qualities can "support":
+## a resource, increasing its max amount
+## or an activity, increasing its max completions
+
+## These types receive this support via modifier list, preserving base maximums
+## This system is source -> target so that tooltips can be updated immediately
+## As opposed to a future modifier system which would be target -> source
 
 const MAX: int = 1e10
 

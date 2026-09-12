@@ -7,6 +7,10 @@ extends Node
 ## (Specific use cases can still get their current value for arithmetic)
 ## They are considered inactive and removed from the count at zero
 
+## Also, qualities can support (increase the max of) activities and qualities
+## But cant be supported themselves, as they have no maximum
+## A future "gate" system for controlling quality values at the target level is planned
+
 var QualityData = {
 	"debug_quality_1": {
 		"LOC_title": "An Uncertain Beginning",
@@ -21,10 +25,7 @@ var QualityData = {
 				"max": 5,
 				"permanent": false
 			}
-		},
-		"thresholds": [
-			
-		]
+		}
 	},
 	"debug_quality_3": {
 		"LOC_title": "A Line of Horrendeously Excessive And Quite Unnecessary Length",
