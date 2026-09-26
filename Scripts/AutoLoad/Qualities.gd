@@ -18,14 +18,7 @@ var QualityData = {
 	},
 	"debug_quality_2": {
 		"LOC_title": "A Particular Persistence",
-		"LOC_desc": "Practical proof of your proficiency in processes",
-		"unlocks": {
-			"debug_activity_7": {
-				"min": 4,
-				"max": 5,
-				"permanent": false
-			}
-		}
+		"LOC_desc": "Practical proof of your proficiency in processes"
 	},
 	"debug_quality_3": {
 		"LOC_title": "A Line of Horrendeously Excessive And Quite Unnecessary Length",

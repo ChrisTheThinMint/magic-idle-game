@@ -50,7 +50,20 @@ theme_override_fonts/bold_italics_font = ExtResource("3_h5yfq")
 theme_override_fonts/italics_font = ExtResource("4_qswq4")
 theme_override_fonts/mono_font = ExtResource("5_y8uud")
 bbcode_enabled = true
-text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin laoreet pharetra dui ac elementum. Donec pellentesque efficitur ante sed bibendum."
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin laoreet pharetra dui ac elementum."
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="RequirementTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=48295952]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/bold_font = ExtResource("2_gh0ai")
+theme_override_fonts/bold_italics_font = ExtResource("3_h5yfq")
+theme_override_fonts/italics_font = ExtResource("4_qswq4")
+theme_override_fonts/mono_font = ExtResource("5_y8uud")
+bbcode_enabled = true
+text = "Donec pellentesque efficitur ante sed bibendum."
 fit_content = true
 scroll_active = false
 horizontal_alignment = 1
